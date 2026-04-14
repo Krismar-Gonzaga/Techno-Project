@@ -100,4 +100,6 @@ class KitController extends Controller
 
         return redirect()->route('kits.index')->with('success', 'Results released to patient portal!');
     }
+
+    
 }

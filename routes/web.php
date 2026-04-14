@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KitController;
+use App\Http\Controllers\PatientAccessController;
+use App\Http\Controllers\PatientResultController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -25,3 +27,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/kits/{id}/save-results', [KitController::class, 'saveResults'])->name('kits.save-results');
     Route::post('/kits/{id}/release', [KitController::class, 'releaseResults'])->name('kits.release');
 });
+
+
+
+// Patient Access Routes (No authentication required)
+Route::get('/patient-access', [PatientAccessController::class, 'showForm'])->name('patient.access.form');
+Route::post('/patient-access/verify', [PatientAccessController::class, 'verify'])->name('patient.access.verify');
+Route::get('/patient-results/{kit_code}/{dob}', [PatientResultController::class, 'show'])->name('patient.results.show');
+Route::get('/patient-results/download/{kit_code}/{dob}', [PatientResultController::class, 'downloadPDF'])->name('patient.results.download');

@@ -6,8 +6,12 @@
     </div>
     
     <nav class="flex items-center space-x-8 text-sm font-medium text-gray-600">
-        <a href="#" class="hover:text-[#0D7A5F]">Access view Result</a>
-        <a href="#" class="text-[#0D7A5F] border-b-2 border-[#0D7A5F] pb-1">Login as admin</a>
+        <a href="{{ route('patient.access.form') }}" class="hover:text-[#0D7A5F] {{ request()->routeIs('patient.access.*') ? 'text-[#0D7A5F] border-b-2 border-[#0D7A5F] pb-1' : '' }}">
+            Access view Result
+        </a>
+        <a href="{{ route('login') }}" class="hover:text-[#0D7A5F] {{ request()->routeIs('login') ? 'text-[#0D7A5F] border-b-2 border-[#0D7A5F] pb-1' : '' }}">
+            Login as admin
+        </a>
     </nav>
 
     <div class="text-gray-400 cursor-pointer">

@@ -1,179 +1,209 @@
 @extends('layouts.app')
 
+@section('title', 'Upload Results - Serene Portal')
+
 @section('content')
-<div class="max-w-6xl mx-auto">
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold">KIT MANAGEMENT > UPLOAD RESULTS</h1>
-        <p class="text-gray-600 mt-2">Test Kit: <span class="font-mono font-bold">{{ $kit->kit_code }}</span></p>
-        <p class="text-gray-600">Enter diagnostic data for the patient's submitted samples. Ensure all fields are verified before releasing to the portal.</p>
+<div class="max-w-7xl mx-auto pb-24">
+    <div class="mb-8 flex justify-between items-start">
+        <div>
+            <div class="flex items-center space-x-2 text-[10px] font-bold text-gray-400 tracking-widest uppercase mb-2">
+                <span>Kit Management</span>
+                <i class="fas fa-chevron-right text-[8px]"></i>
+                <span class="text-[#0D7A5F]">Upload Results</span>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800 tracking-tight">Test Kit {{ $kit->kit_code }}</h1>
+            <p class="text-sm text-gray-500 mt-1 max-w-2xl">
+                Enter diagnostic data for the patient's submitted samples. Ensure all fields are verified before releasing to the portal.
+            </p>
+        </div>
+        
+        <div class="flex space-x-3">
+            <div class="bg-[#FFF8E6] px-4 py-2 rounded-xl text-center border border-[#FFEBC2]">
+                <p class="text-[9px] uppercase font-bold text-[#B18414] tracking-tight">Status</p>
+                <p class="text-xs font-bold text-[#D9A01B]">Pending Entry</p>
+            </div>
+            <div class="bg-[#E8F5F1] px-4 py-2 rounded-xl text-center border border-[#D1EBE3]">
+                <p class="text-[9px] uppercase font-bold text-[#0D7A5F] tracking-tight">Patient ID</p>
+                <p class="text-xs font-bold text-[#0D7A5F]">PT-4421-SM</p>
+            </div>
+        </div>
     </div>
 
-    <form method="POST" action="{{ route('kits.save-results', $kit->id) }}" class="space-y-6">
+    <form method="POST" action="{{ route('kits.save-results', $kit->id) }}" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         @csrf
         
-        @if(in_array('Urinalysis', $kit->ordered_tests))
-        <div class="bg-white rounded-lg shadow">
-            <div class="p-6 border-b">
-                <h2 class="text-xl font-bold">Urinalysis Form</h2>
-            </div>
-            <div class="p-6">
-                <div class="grid grid-cols-2 gap-8">
-                    <div>
-                        <h3 class="font-bold mb-4">Physical Analysis</h3>
-                        <div class="space-y-3">
+        <div class="lg:col-span-8 space-y-8">
+            
+            @if(in_array('Urinalysis', $kit->ordered_tests))
+            <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8">
+                <div class="flex items-center space-x-4 mb-10">
+                    <div class="w-12 h-12 bg-[#E8F5F1] rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-droplet text-[#0D7A5F] text-xl"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-gray-800">Urinalysis Form</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                    <div class="space-y-6">
+                        <h3 class="text-xs font-bold text-[#4AA6EF] uppercase tracking-widest border-b border-gray-50 pb-2">Physical Analysis</h3>
+                        <div class="space-y-4">
                             <div>
-                                <label class="block text-sm font-medium">Color</label>
-                                <select name="urinalysis[color]" class="w-full px-3 py-2 border rounded-lg mt-1">
+                                <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Color</label>
+                                <select name="urinalysis[color]" class="w-full bg-[#F4F9F7] border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#0D7A5F]">
                                     <option>Straw</option>
                                     <option>Yellow</option>
-                                    <option>Amber</option>
-                                    <option>Dark Yellow</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium">Clarity</label>
-                                <select name="urinalysis[clarity]" class="w-full px-3 py-2 border rounded-lg mt-1">
+                                <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Clarity</label>
+                                <select name="urinalysis[clarity]" class="w-full bg-[#F4F9F7] border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#0D7A5F]">
                                     <option>Clear</option>
-                                    <option>Slightly Cloudy</option>
                                     <option>Cloudy</option>
-                                    <option>Turbid</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-                    
-                    <div>
-                        <h3 class="font-bold mb-4">Chemical Analysis</h3>
-                        <div class="space-y-3">
+
+                    <div class="space-y-6">
+                        <h3 class="text-xs font-bold text-[#4AA6EF] uppercase tracking-widest border-b border-gray-50 pb-2">Chemical Analysis</h3>
+                        <div class="space-y-4">
                             <div>
-                                <label class="block text-sm font-medium">Glucose</label>
-                                <select name="urinalysis[glucose]" class="w-full px-3 py-2 border rounded-lg mt-1">
+                                <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Glucose</label>
+                                <select name="urinalysis[glucose]" class="w-full bg-[#F4F9F7] border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#0D7A5F]">
                                     <option>Negative</option>
                                     <option>Trace</option>
-                                    <option>1+</option>
-                                    <option>2+</option>
-                                    <option>3+</option>
-                                    <option>4+</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium">Protein</label>
-                                <select name="urinalysis[protein]" class="w-full px-3 py-2 border rounded-lg mt-1">
+                                <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Protein</label>
+                                <select name="urinalysis[protein]" class="w-full bg-[#F4F9F7] border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#0D7A5F]">
                                     <option>Negative</option>
                                     <option>Trace</option>
-                                    <option>1+</option>
-                                    <option>2+</option>
-                                    <option>3+</option>
-                                    <option>4+</option>
                                 </select>
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="mt-12">
+                    <h3 class="text-xs font-bold text-[#4AA6EF] uppercase tracking-widest border-b border-gray-50 pb-4 mb-6">Microscopic Analysis</h3>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="bg-[#F4F9F7] rounded-xl p-4 flex items-center justify-between">
+                            <div class="flex-1">
+                                <label class="block text-[9px] font-bold text-gray-400 uppercase">RBC Count</label>
+                                <input type="text" name="urinalysis[rbc]" placeholder="cells/hpf" class="bg-transparent border-none p-0 text-sm w-full focus:ring-0">
+                            </div>
+                            <i class="fas fa-microscope text-gray-300 text-xs"></i>
+                        </div>
+                        <div class="bg-[#F4F9F7] rounded-xl p-4 flex items-center justify-between">
+                            <div class="flex-1">
+                                <label class="block text-[9px] font-bold text-gray-400 uppercase">WBC Count</label>
+                                <input type="text" name="urinalysis[wbc]" placeholder="cells/hpf" class="bg-transparent border-none p-0 text-sm w-full focus:ring-0">
+                            </div>
+                            <i class="fas fa-microscope text-gray-300 text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            @if(in_array('Fecalysis', $kit->ordered_tests))
+            <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8">
+                <div class="flex items-center space-x-4 mb-10">
+                    <div class="w-12 h-12 bg-[#E8F5F1] rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-chart-simple text-[#0D7A5F] text-xl"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-gray-800">Fecalysis Form</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-[#F4F9F7]/50 border border-gray-50 rounded-2xl p-6">
+                        <h4 class="text-[10px] font-bold text-[#0D7A5F] uppercase mb-4 tracking-widest">Macroscopic</h4>
+                        <div class="space-y-4">
+                            <input type="text" name="fecalysis[consistency]" placeholder="Consistency..." class="w-full bg-white border-none rounded-xl px-4 py-2.5 text-sm shadow-sm">
+                            <input type="text" name="fecalysis[color]" placeholder="Color..." class="w-full bg-white border-none rounded-xl px-4 py-2.5 text-sm shadow-sm">
+                        </div>
+                    </div>
+                    <div class="bg-[#F4F9F7]/50 border border-gray-50 rounded-2xl p-6">
+                        <h4 class="text-[10px] font-bold text-[#0D7A5F] uppercase mb-4 tracking-widest">Parasitology</h4>
+                        <div class="space-y-4">
+                            <input type="text" name="fecalysis[ova]" placeholder="Ova or Parasites..." class="w-full bg-white border-none rounded-xl px-4 py-2.5 text-sm shadow-sm">
+                            <input type="text" name="fecalysis[protozoa]" placeholder="Protozoa..." class="w-full bg-white border-none rounded-xl px-4 py-2.5 text-sm shadow-sm">
+                        </div>
+                    </div>
+                    <div class="bg-[#F4F9F7]/50 border border-gray-50 rounded-2xl p-6">
+                        <h4 class="text-[10px] font-bold text-[#0D7A5F] uppercase mb-4 tracking-widest">Observations</h4>
+                        <div class="space-y-4">
+                            <select name="fecalysis[occult_blood]" class="w-full bg-white border-none rounded-xl px-4 py-2.5 text-sm shadow-sm">
+                                <option>Occult Blood: Negative</option>
+                                <option>Positive</option>
+                            </select>
+                            <input type="text" name="fecalysis[fat]" placeholder="Fat Globules..." class="w-full bg-white border-none rounded-xl px-4 py-2.5 text-sm shadow-sm">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+        </div>
+
+        <div class="lg:col-span-4 space-y-6">
+            
+            @if(in_array('Urine HCG', $kit->ordered_tests))
+            <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8">
+                <div class="flex items-center space-x-3 mb-6">
+                    <div class="w-10 h-10 bg-[#E8F5F1] rounded-xl flex items-center justify-center">
+                        <i class="fas fa-person text-[#0D7A5F]"></i>
+                    </div>
+                    <h2 class="font-bold text-gray-800">HCG Form</h2>
+                </div>
+                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-6">Rapid Immunoassay Result</p>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <label class="cursor-pointer group">
+                        <input type="radio" name="hcg_result" value="positive" class="hidden peer">
+                        <div class="border-2 border-gray-50 bg-white p-6 rounded-2xl text-center peer-checked:border-[#0D7A5F] peer-checked:bg-[#E8F5F1] transition">
+                            <div class="w-8 h-8 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-3 peer-checked:bg-[#0D7A5F]">
+                                <i class="fas fa-plus text-xs text-gray-400"></i>
+                            </div>
+                            <span class="text-xs font-bold text-gray-500">Positive</span>
+                        </div>
+                    </label>
+                    <label class="cursor-pointer group">
+                        <input type="radio" name="hcg_result" value="negative" class="hidden peer" checked>
+                        <div class="border-2 border-gray-50 bg-white p-6 rounded-2xl text-center peer-checked:border-[#0D7A5F] peer-checked:bg-[#E8F5F1] transition">
+                            <div class="w-8 h-8 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fas fa-minus text-xs text-gray-400"></i>
+                            </div>
+                            <span class="text-xs font-bold text-gray-500">Negative</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            @endif
+
+            <div class="relative rounded-[2rem] overflow-hidden group">
+                <img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&q=80&w=400" class="w-full h-64 object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0D7A5F] via-[#0D7A5F]/40 to-transparent p-8 flex flex-col justify-end">
+                    <p class="text-[9px] font-bold text-white/70 uppercase tracking-widest mb-1">Internal Check</p>
+                    <h3 class="text-white font-bold text-xl mb-2">Kit {{ $kit->kit_code }} Stability</h3>
+                    <p class="text-[11px] text-white/80 leading-relaxed">Sample verified as fresh and non-hemolyzed upon arrival.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="fixed bottom-8 left-1/2 -translate-x-1/2 w-full max-w-4xl px-4 z-50">
+            <div class="bg-white/80 backdrop-blur-md rounded-full shadow-2xl border border-white p-3 flex items-center justify-between">
+                <div class="flex items-center ml-6">
+                    <div class="w-6 h-6 bg-[#E8F5F1] rounded-full flex items-center justify-center mr-3">
+                        <i class="fas fa-check text-[#0D7A5F] text-[10px]"></i>
+                    </div>
+                    <span class="text-xs font-bold text-gray-600">All fields are correctly formatted</span>
                 </div>
                 
-                <div class="mt-6">
-                    <h3 class="font-bold mb-4">Microscopic Analysis</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium">RBC COUNT (cells/hpf)</label>
-                            <input type="text" name="urinalysis[rbc]" class="w-full px-3 py-2 border rounded-lg mt-1">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium">WBC COUNT (cells/hpf)</label>
-                            <input type="text" name="urinalysis[wbc]" class="w-full px-3 py-2 border rounded-lg mt-1">
-                        </div>
-                    </div>
-                </div>
+                <button type="submit" class="bg-[#3B9E7E] hover:bg-[#2D7A61] text-white px-8 py-3.5 rounded-full font-bold text-sm flex items-center transition shadow-lg shadow-[#3b9e7e]/20">
+                    Release Results to Patient <i class="fas fa-paper-plane ml-3 text-xs"></i>
+                </button>
             </div>
-        </div>
-        @endif
-
-        @if(in_array('Fecalysis', $kit->ordered_tests))
-        <div class="bg-white rounded-lg shadow">
-            <div class="p-6 border-b">
-                <h2 class="text-xl font-bold">Feacalysis Form</h2>
-            </div>
-            <div class="p-6">
-                <div class="space-y-6">
-                    <div>
-                        <h3 class="font-bold mb-3">MACROSCOPIC</h3>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium">CONSISTENCY</label>
-                                <select name="fecalysis[consistency]" class="w-full px-3 py-2 border rounded-lg mt-1">
-                                    <option>Soft</option>
-                                    <option>Formed</option>
-                                    <option>Hard</option>
-                                    <option>Loose</option>
-                                    <option>Watery</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium">COLOR</label>
-                                <select name="fecalysis[color]" class="w-full px-3 py-2 border rounded-lg mt-1">
-                                    <option>Brown</option>
-                                    <option>Clay</option>
-                                    <option>Yellow</option>
-                                    <option>Green</option>
-                                    <option>Black</option>
-                                    <option>Red</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <h3 class="font-bold mb-3">PARASITOLOGY</h3>
-                        <div class="space-y-3">
-                            <div>
-                                <label class="block text-sm font-medium">OVA OR PARASITES</label>
-                                <select name="fecalysis[ova_parasites]" class="w-full px-3 py-2 border rounded-lg mt-1">
-                                    <option>None Seen</option>
-                                    <option>Present</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium">PROTOZOA</label>
-                                <select name="fecalysis[protozoa]" class="w-full px-3 py-2 border rounded-lg mt-1">
-                                    <option>None Seen</option>
-                                    <option>Present</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <h3 class="font-bold mb-3">OBSERVATIONS</h3>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium">OCCULT BLOOD</label>
-                                <select name="fecalysis[occult_blood]" class="w-full px-3 py-2 border rounded-lg mt-1">
-                                    <option>Negative</option>
-                                    <option>Positive</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium">FAT GLOBULES</label>
-                                <select name="fecalysis[fat_globules]" class="w-full px-3 py-2 border rounded-lg mt-1">
-                                    <option>None</option>
-                                    <option>Few</option>
-                                    <option>Moderate</option>
-                                    <option>Many</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endif
-
-        <input type="hidden" name="test_type" value="{{ implode(',', $kit->ordered_tests) }}">
-        
-        <div class="flex justify-end">
-            <button type="submit" class="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-bold">
-                Release Results to Patient
-            </button>
         </div>
     </form>
 </div>
