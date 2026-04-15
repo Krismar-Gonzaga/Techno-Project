@@ -30,13 +30,16 @@ class PatientAccessController extends Controller
 
         // Verify date of birth
         $patient = Patient::find($kit->patient_id);
-        
-        if ($patient->date_of_birth != $request->date_of_birth) {
+
+        // Convert database datetime to date only
+        $patientDob = date('Y-m-d', strtotime($patient->date_of_birth));
+
+        if ($patientDob != $request->date_of_birth) {
             return back()->withErrors(['date_of_birth' => 'Date of birth does not match our records.']);
         }
 
         // Check if results are released
-        if ($kit->status !== 'released') {
+        if ($kit->status !== 'complete') {
             return back()->withErrors(['kit_code' => 'Results are not yet available. Please check back later.']);
         }
 

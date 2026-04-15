@@ -6,32 +6,32 @@
     <title>Your Lab Results - Serene Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         * { font-family: 'Inter', sans-serif; }
-        
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-        
-        .status-normal {
-            background-color: #d1fae5;
-            color: #065f46;
-        }
-        
+        body { background-color: #EBF5F2; }
+
         .result-card {
-            transition: transform 0.2s, box-shadow 0.2s;
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 10px 30px -10px rgba(13, 122, 95, 0.05);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
         }
-        
-        .result-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+
+        .data-pill {
+            background-color: #E8F3F0;
+            border-radius: 1rem;
+            padding: 1rem 1.5rem;
+        }
+
+        .status-dot {
+            height: 8px;
+            width: 8px;
+            background-color: #0D7A5F;
+            border-radius: 50%;
+            display: inline-block;
         }
         
         .reveal-content {
@@ -41,220 +41,227 @@
         }
         
         .reveal-content.active {
-            max-height: 500px;
+            max-height: 200px;
             transition: max-height 0.3s ease-in;
         }
     </style>
 </head>
-<body class="bg-gray-50">
-    <!-- Header -->
-    <header class="w-full bg-white border-b border-gray-100 px-8 py-4 flex justify-between items-center shadow-sm">
-        <div class="flex items-center space-x-2">
-            <div class="text-[#0D7A5F] text-xl font-bold flex items-center">
-                <i class="fas fa-shield-halved mr-2"></i> SERENE PORTAL
-            </div>
+<body class="pb-24">
+    <header class="w-full bg-white px-12 py-5 flex justify-between items-center sticky top-0 z-50">
+        <div class="text-[#0D7A5F] text-lg font-bold tracking-tight">
+            Serene Portal <span class="ml-2 text-[10px] bg-[#E8F3F0] px-2 py-1 rounded text-[#0D7A5F] uppercase tracking-widest font-bold">Read-Only View</span>
         </div>
-        
-        <div class="text-sm">
-            <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs">READ-ONLY VIEW</span>
+        <div class="flex items-center space-x-6 text-gray-400">
+            <i class="far fa-bell text-lg cursor-pointer"></i>
+            <div class="w-8 h-8 rounded-full bg-[#0D7A5F] flex items-center justify-center text-white text-xs">
+                <i class="fas fa-user"></i>
+            </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <div class="max-w-4xl mx-auto py-8 px-4">
-        <!-- Collection Date -->
-        <div class="mb-6 text-right">
-            <p class="text-sm text-gray-500">
-                <i class="far fa-calendar-alt mr-1"></i> 
-                COLLECTION DATE: {{ $kit->collection_date->format('M d, Y') }}
+    <main class="max-w-3xl mx-auto px-6 pt-12">
+        <div class="bg-[#E2EFEA] rounded-[2.5rem] p-10 text-center mb-8">
+            <p class="text-[11px] font-bold text-[#0D7A5F] uppercase tracking-[0.2em] mb-4">
+                Collection Date: {{ optional($kit->collection_date)->format('M d, Y') ?? 'Date not specified' }}
+            </p>
+            <div class="w-12 h-12 bg-[#0D7A5F] rounded-full flex items-center justify-center mx-auto mb-6 text-white shadow-lg shadow-[#0D7A5F]/20">
+                <i class="fas fa-check text-lg"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800 tracking-tight mb-2">All results within normal range</h1>
+            <p class="text-sm text-gray-500 leading-relaxed max-w-sm mx-auto">
+                Your clinical indicators suggest optimal health levels across all tested categories.
             </p>
         </div>
-        
-        <!-- Success Message -->
-        <div class="bg-green-50 border-l-4 border-green-500 rounded-lg p-4 mb-6">
-            <div class="flex items-center">
-                <i class="fas fa-check-circle text-green-500 text-xl mr-3"></i>
-                <div>
-                    <h3 class="font-semibold text-green-800">All results within normal range</h3>
-                    <p class="text-sm text-green-700">Your clinical indicators suggest optimal health levels across all tested categories.</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Download PDF Button -->
-        <div class="text-center mb-8">
+
+        <div class="flex justify-center mb-12">
             <a href="{{ route('patient.results.download', ['kit_code' => $kit->kit_code, 'dob' => $patient->date_of_birth]) }}" 
-               class="inline-flex items-center space-x-2 bg-[#0D7A5F] text-white px-6 py-3 rounded-lg hover:bg-[#0a5e48] transition shadow-md">
-                <i class="fas fa-download"></i>
+               class="bg-[#0D7A5F] text-white px-8 py-4 rounded-2xl font-bold text-sm flex items-center space-x-3 shadow-lg shadow-[#0D7A5F]/20 hover:bg-[#0a5e48] transition-all">
+                <i class="fas fa-download text-xs"></i>
                 <span>Download PDF Report</span>
             </a>
         </div>
-        
+
         <!-- Urinalysis Section -->
         @if($urinalysisData)
-        <div class="bg-white rounded-xl shadow-lg mb-6 overflow-hidden result-card">
-            <div class="bg-gray-50 px-6 py-4 border-b">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-bold text-gray-800">Urinalysis</h2>
-                    <span class="status-badge status-normal">
-                        <i class="fas fa-check-circle mr-1 text-xs"></i> Status: Normal
-                    </span>
+        <div class="result-card">
+            <div class="p-8 flex justify-between items-center cursor-pointer" onclick="toggleUrinalysis()">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-[#E8F3F0] rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-droplet text-[#0D7A5F]"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-gray-800">Urinalysis</h2>
+                        <p class="text-[11px] text-[#0D7A5F] font-bold uppercase tracking-wider flex items-center">
+                            <span class="status-dot mr-2"></span> Status: Normal
+                        </p>
+                    </div>
                 </div>
+                <i class="fas fa-chevron-down text-gray-300" id="urinalysisIcon"></i>
             </div>
             
-            <div class="p-6">
-                <h3 class="font-semibold text-gray-700 mb-4">PHYSICAL DATA</h3>
-                <table class="w-full mb-6">
-                    <tbody>
-                        <tr class="border-b">
-                            <td class="py-2 font-medium">Color</td>
-                            <td class="py-2">{{ $urinalysisData['color'] ?? 'Straw' }}</td>
-                            <td class="py-2 text-green-600">NORMAL</td>
-                            <td class="py-2 font-medium">Transparency</td>
-                            <td class="py-2">{{ $urinalysisData['clarity'] ?? 'Clear' }}</td>
-                            <td class="py-2 text-green-600">NORMAL</td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="py-2 font-medium">Glucose</td>
-                            <td class="py-2">{{ $urinalysisData['glucose'] ?? 'Negative' }}</td>
-                            <td class="py-2 text-green-600">NORMAL</td>
-                            <td class="py-2 font-medium">Protein</td>
-                            <td class="py-2">{{ $urinalysisData['protein'] ?? 'Negative' }}</td>
-                            <td class="py-2 text-green-600">NORMAL</td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="py-2 font-medium">pH</td>
-                            <td class="py-2">6.0</td>
-                            <td class="py-2 text-green-600">NORMAL</td>
-                            <td class="py-2 font-medium"></td>
-                            <td class="py-2"></td>
-                            <td class="py-2"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <h3 class="font-semibold text-gray-700 mb-4">MICROSCOPIC DATA</h3>
-                <table class="w-full">
-                    <tbody>
-                        <tr class="border-b">
-                            <td class="py-2 font-medium">RBC</td>
-                            <td class="py-2">{{ $urinalysisData['rbc'] ?? '0-2' }} /hpf</td>
-                            <td class="py-2 text-green-600">NORMAL</td>
-                            <td class="py-2 font-medium">Ref: 0-3 /hpf</td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="py-2 font-medium">WBC</td>
-                            <td class="py-2">{{ $urinalysisData['wbc'] ?? '1-3' }} /hpf</td>
-                            <td class="py-2 text-green-600">NORMAL</td>
-                            <td class="py-2 font-medium">Ref: 0-5 /hpf</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div id="urinalysisContent" class="px-8 pb-8 space-y-8" style="display: none;">
+                <div>
+                    <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Physical Data</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="data-pill flex justify-between items-center">
+                            <div>
+                                <span class="block text-[10px] text-gray-400 font-bold uppercase">Color</span>
+                                <span class="font-bold text-gray-800">{{ $urinalysisData['color'] ?? 'Straw' }}</span>
+                            </div>
+                            <span class="text-[9px] font-bold bg-white px-2 py-1 rounded text-[#0D7A5F]">NORMAL</span>
+                        </div>
+                        <div class="data-pill flex justify-between items-center">
+                            <div>
+                                <span class="block text-[10px] text-gray-400 font-bold uppercase">Clarity</span>
+                                <span class="font-bold text-gray-800">{{ $urinalysisData['clarity'] ?? 'Clear' }}</span>
+                            </div>
+                            <span class="text-[9px] font-bold bg-white px-2 py-1 rounded text-[#0D7A5F]">NORMAL</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Chemical & Microscopic</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-sm font-medium text-gray-600">Glucose</span>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-xs text-gray-400 italic">Ref: Negative</span>
+                                <span class="text-sm font-bold text-[#0D7A5F]">{{ $urinalysisData['glucose'] ?? 'Negative' }}</span>
+                                <span class="status-dot"></span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-sm font-medium text-gray-600">Protein</span>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-xs text-gray-400 italic">Ref: Negative</span>
+                                <span class="text-sm font-bold text-gray-800">{{ $urinalysisData['protein'] ?? 'Negative' }}</span>
+                                <span class="status-dot"></span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-sm font-medium text-gray-600">RBC Count</span>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-xs text-gray-400 italic">Ref: 0-3 /hpf</span>
+                                <span class="text-sm font-bold text-gray-800">{{ $urinalysisData['rbc'] ?? '0-2' }} /hpf</span>
+                                <span class="status-dot"></span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-sm font-medium text-gray-600">WBC Count</span>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-xs text-gray-400 italic">Ref: 0-5 /hpf</span>
+                                <span class="text-sm font-bold text-gray-800">{{ $urinalysisData['wbc'] ?? '1-3' }} /hpf</span>
+                                <span class="status-dot"></span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-sm font-medium text-gray-600">pH</span>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-xs text-gray-400 italic">Ref: 5.0-8.0</span>
+                                <span class="text-sm font-bold text-gray-800">{{ $urinalysisData['ph'] ?? '6.0' }}</span>
+                                <span class="status-dot"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         @endif
-        
-        <!-- Fecalysis Section -->
-        @if($fecalysisData)
-        <div class="bg-white rounded-xl shadow-lg mb-6 overflow-hidden result-card">
-            <div class="bg-gray-50 px-6 py-4 border-b">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-bold text-gray-800">Fecalysis</h2>
-                    <span class="status-badge status-normal">
-                        <i class="fas fa-check-circle mr-1 text-xs"></i> Status: Normal
-                    </span>
-                </div>
-            </div>
-            
-            <div class="p-6">
-                <table class="w-full">
-                    <tbody>
-                        <tr class="border-b">
-                            <td class="py-2 font-medium">Consistency</td>
-                            <td class="py-2">{{ $fecalysisData['consistency'] ?? 'Soft' }}</td>
-                            <td class="py-2 text-green-600">NORMAL</td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="py-2 font-medium">Color</td>
-                            <td class="py-2">{{ $fecalysisData['color'] ?? 'Brown' }}</td>
-                            <td class="py-2 text-green-600">NORMAL</td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="py-2 font-medium">Ova or Parasites</td>
-                            <td class="py-2">{{ $fecalysisData['ova_parasites'] ?? 'None Seen' }}</td>
-                            <td class="py-2 text-green-600">NORMAL</td>
-                        </tr>
-                        <tr class="border-b">
-                            <td class="py-2 font-medium">Occult Blood</td>
-                            <td class="py-2">{{ $fecalysisData['occult_blood'] ?? 'Negative' }}</td>
-                            <td class="py-2 text-green-600">NORMAL</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        @endif
-        
+
         <!-- Urine HCG Section -->
         @if($hcgData)
-        <div class="bg-white rounded-xl shadow-lg mb-6 overflow-hidden result-card">
-            <div class="bg-gray-50 px-6 py-4 border-b">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-xl font-bold text-gray-800">Urine HCG</h2>
-                    <span class="status-badge status-normal">
-                        <i class="fas fa-check-circle mr-1 text-xs"></i> Status: Result Ready
-                    </span>
+        <div class="result-card">
+            <div class="p-8 flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-[#E8F3F0] rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-vial text-[#0D7A5F]"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-gray-800">Urine HCG</h2>
+                        <p class="text-[11px] text-[#0D7A5F] font-bold uppercase tracking-wider flex items-center">
+                            <span class="status-dot mr-2"></span> Status: {{ $hcgData['status'] ?? 'Result Ready' }}
+                        </p>
+                    </div>
                 </div>
             </div>
-            
-            <div class="p-6">
-                <p class="text-gray-700">Result: Negative</p>
+            <div class="bg-[#F8FBFA] p-6 text-center border-t border-gray-50">
+                <button onclick="toggleHCG()" class="bg-[#0D7A5F] text-white px-6 py-3 rounded-xl font-bold text-xs flex items-center space-x-2 mx-auto shadow-md">
+                    <i class="far fa-eye"></i>
+                    <span>Tap to reveal</span>
+                </button>
+            </div>
+            <div id="hcgContent" class="px-8 pb-8 text-center" style="display: none;">
+                <div class="data-pill">
+                    <p class="text-sm font-bold text-gray-800">Result: {{ $hcgData['result'] ?? 'Negative' }}</p>
+                    <p class="text-xs text-gray-500 mt-2">{{ $hcgData['notes'] ?? 'No pregnancy detected' }}</p>
+                </div>
             </div>
         </div>
         @endif
-        
-        <!-- Tap to Reveal Section -->
-        <div class="bg-gray-50 rounded-xl p-4 mb-6 cursor-pointer" onclick="toggleReveal()">
-            <div class="flex justify-between items-center">
-                <span class="font-semibold text-gray-700">Tap to reveal</span>
-                <i class="fas fa-chevron-down text-gray-400" id="revealIcon"></i>
+
+        <div class="bg-[#E8F3F0] rounded-[2rem] p-8 border border-[#D1E6E0]">
+            <div class="flex items-center space-x-3 mb-4">
+                <i class="far fa-file-lines text-[#0D7A5F]"></i>
+                <h3 class="font-bold text-[#0D7A5F]">Plain-Language Summary</h3>
             </div>
-        </div>
-        
-        <div id="revealContent" class="reveal-content">
-            <div class="bg-blue-50 rounded-xl p-6 mb-6">
-                <h3 class="font-semibold text-blue-900 mb-2">Plain-Language Summary</h3>
-                <p class="text-sm text-blue-800">
-                    Overall, your results are consistent with healthy indicators. While one value is slightly outside the typical range, 
-                    it's common and usually not a cause for concern. We recommend discussing these details with your primary physician 
-                    at your next visit.
-                </p>
-            </div>
-        </div>
-        
-        <!-- Footer -->
-        <div class="text-center pt-6 border-t">
-            <p class="text-sm font-semibold text-gray-700">VERIFIED BY SERENE MEDICAL TEAM</p>
-            <p class="text-xs text-gray-500 mt-2">
-                These results are shared as part of your digital medical record. Please consult with your attending physician 
-                to discuss these findings in the context of your overall health.
+            <p class="text-xs text-[#0D7A5F]/80 leading-relaxed font-medium">
+                {{ $kit->summary ?? 'Overall, your results are consistent with healthy indicators. While one value is slightly outside the typical range, it\'s common and usually not a cause for concern.' }}
             </p>
+            <div class="mt-6 flex items-center space-x-2 text-[10px] font-bold text-[#0D7A5F] uppercase tracking-tighter">
+                <i class="fas fa-check-circle"></i>
+                <span>Verified by Serene Medical Team on {{ now()->format('M d, Y') }}</span>
+            </div>
         </div>
-    </div>
-    
+    </main>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-gray-100 flex justify-around items-center py-4 px-6 z-50">
+        <div class="flex flex-col items-center space-y-1 text-gray-300">
+            <i class="far fa-heart text-lg"></i>
+            <span class="text-[9px] font-bold uppercase">Health</span>
+        </div>
+        <div class="flex flex-col items-center space-y-1 text-[#0D7A5F]">
+            <div class="bg-[#E8F3F0] px-4 py-1 rounded-full mb-1">
+                <i class="fas fa-microscope text-lg"></i>
+            </div>
+            <span class="text-[9px] font-bold uppercase">Results</span>
+        </div>
+        <div class="flex flex-col items-center space-y-1 text-gray-300">
+            <i class="far fa-comment text-lg"></i>
+            <span class="text-[9px] font-bold uppercase">Messages</span>
+        </div>
+        <div class="flex flex-col items-center space-y-1 text-gray-300">
+            <i class="far fa-user text-lg"></i>
+            <span class="text-[9px] font-bold uppercase">Profile</span>
+        </div>
+    </nav>
+
     <script>
-        function toggleReveal() {
-            const content = document.getElementById('revealContent');
-            const icon = document.getElementById('revealIcon');
+        function toggleUrinalysis() {
+            const content = document.getElementById('urinalysisContent');
+            const icon = document.getElementById('urinalysisIcon');
             
-            content.classList.toggle('active');
-            
-            if (content.classList.contains('active')) {
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
                 icon.classList.remove('fa-chevron-down');
                 icon.classList.add('fa-chevron-up');
             } else {
+                content.style.display = 'none';
                 icon.classList.remove('fa-chevron-up');
                 icon.classList.add('fa-chevron-down');
+            }
+        }
+        
+        function toggleHCG() {
+            const content = document.getElementById('hcgContent');
+            const button = event.currentTarget;
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                button.innerHTML = '<i class="far fa-eye-slash"></i><span>Tap to hide</span>';
+            } else {
+                content.style.display = 'none';
+                button.innerHTML = '<i class="far fa-eye"></i><span>Tap to reveal</span>';
             }
         }
     </script>

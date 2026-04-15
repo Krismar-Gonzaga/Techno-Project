@@ -11,7 +11,7 @@
         * { font-family: 'Inter', sans-serif; }
         
         body {
-            background-color: #EBF5F2; /* Soft teal background from mockup */
+            background-color: #EBF5F2;
         }
 
         .login-card {
@@ -19,7 +19,7 @@
         }
 
         .custom-input {
-            background-color: #E8F3F0; /* Pale green inputs */
+            background-color: #E8F3F0;
             border: none;
             transition: all 0.2s ease;
         }
@@ -28,25 +28,15 @@
             background-color: #E2EFEA;
             box-shadow: 0 0 0 2px rgba(13, 122, 95, 0.1);
         }
+        
+        .custom-input.error {
+            border: 1px solid #ef4444;
+            background-color: #fee2e2;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
-    <header class="w-full bg-white/80 backdrop-blur-md px-12 py-5 flex justify-between items-center">
-        <div class="flex items-center space-x-2">
-            <div class="text-[#0D7A5F] text-lg font-bold flex items-center tracking-tight">
-                <i class="fas fa-shield-halved mr-2"></i> Serene Portal
-            </div>
-        </div>
-        
-        <nav class="flex items-center space-x-8 text-[11px] font-bold uppercase tracking-wider">
-            <a href="{{ route('patient.access.form') }}" class="text-[#0D7A5F] border-b-2 border-[#0D7A5F] pb-1">Access view Result</a>
-            <a href="{{ route('login') }}" class="text-gray-400 hover:text-[#0D7A5F] transition">Login as admin</a>
-        </nav>
-
-        <div class="text-gray-400 hover:text-gray-600 cursor-pointer transition">
-            <i class="far fa-question-circle text-lg"></i>
-        </div>
-    </header>
+    <x-header />
 
     <main class="flex-grow flex items-center justify-center p-6">
         <div class="max-w-[440px] w-full">
@@ -60,6 +50,33 @@
                     Please enter your clinical details below to securely view your health data.
                 </p>
                 
+                {{-- Display general error message (from session) --}}
+                @if(session('error'))
+                    <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-lg text-left">
+                        <div class="flex items-center">
+                            <i class="fas fa-exclamation-triangle text-red-500 mr-3"></i>
+                            <p class="text-sm text-red-700">{{ session('error') }}</p>
+                        </div>
+                    </div>
+                @endif
+                
+                {{-- Display validation errors --}}
+                @if($errors->any())
+                    <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-lg text-left">
+                        <div class="flex items-start">
+                            <i class="fas fa-exclamation-circle text-red-500 mr-3 mt-0.5"></i>
+                            <div class="flex-1">
+                                <p class="text-sm font-semibold text-red-700 mb-1">Please fix the following errors:</p>
+                                <ul class="text-sm text-red-600 list-disc list-inside">
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                
                 <form method="POST" action="{{ route('patient.access.verify') }}" class="space-y-6">
                     @csrf
                     
@@ -71,9 +88,12 @@
                                    name="kit_code" 
                                    value="{{ old('kit_code') }}"
                                    placeholder="e.g. SK-882-941"
-                                   class="w-full pl-11 pr-4 py-4 custom-input rounded-2xl text-sm placeholder:text-gray-400 outline-none"
+                                   class="w-full pl-11 pr-4 py-4 custom-input rounded-2xl text-sm placeholder:text-gray-400 outline-none @error('kit_code') error @enderror"
                                    required>
                         </div>
+                        @error('kit_code')
+                            <p class="text-xs text-red-500 mt-1 ml-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     
                     <div class="text-left">
@@ -82,11 +102,15 @@
                             <i class="far fa-calendar absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
                             <input type="text" 
                                    name="date_of_birth" 
+                                   value="{{ old('date_of_birth') }}"
                                    placeholder="mm/dd/yyyy"
                                    onfocus="(this.type='date')"
-                                   class="w-full pl-11 pr-4 py-4 custom-input rounded-2xl text-sm placeholder:text-gray-400 outline-none"
+                                   class="w-full pl-11 pr-4 py-4 custom-input rounded-2xl text-sm placeholder:text-gray-400 outline-none @error('date_of_birth') error @enderror"
                                    required>
                         </div>
+                        @error('date_of_birth')
+                            <p class="text-xs text-red-500 mt-1 ml-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     
                     <button type="submit" 

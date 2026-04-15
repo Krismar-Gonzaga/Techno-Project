@@ -5,85 +5,69 @@ namespace App\Http\Controllers;
 use App\Models\Kit;
 use App\Models\Patient;
 use App\Models\TestResult;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class PatientResultController extends Controller
 {
-    public function show($kit_code, $dob)
+    public function show(Request $request, $kit_code, $dob)
     {
+        // Verify access token
+        if (!$request->session()->has('access_token')) {
+            abort(403, 'Unauthorized access. Please verify your credentials first.');
+        }
+        
         // Find the kit
-        $kit = Kit::where('kit_code', $kit_code)->first();
+        $kit = Kit::where('kit_code', $kit_code)->firstOrFail();
         
-        if (!$kit) {
-            abort(404, 'Results not found');
-        }
+        // Find the patient
+        $patient = Patient::findOrFail($kit->patient_id);
         
-        $patient = Patient::find($kit->patient_id);
-        
-        // Verify date of birth
-        if ($patient->date_of_birth != $dob) {
-            abort(403, 'Unauthorized access');
-        }
-        
-        // Get test results
+        // Get test results - FIXED: use 'results_data' instead of 'results'
         $testResults = TestResult::where('kit_id', $kit->id)->get();
         
-        // Parse results data
-        $urinalysisData = null;
-        $fecalysisData = null;
-        $hcgData = null;
+        // Extract specific test results - FIXED: use 'results_data'
+        $urinalysis = $testResults->where('test_type', 'urinalysis')->first();
+        $hcg = $testResults->where('test_type', 'hcg')->first();
         
-        foreach ($testResults as $result) {
-            if (str_contains($result->test_type, 'Urinalysis')) {
-                $urinalysisData = $result->results_data;
-            } elseif (str_contains($result->test_type, 'Fecalysis')) {
-                $fecalysisData = $result->results_data;
-            } elseif (str_contains($result->test_type, 'HCG')) {
-                $hcgData = $result->results_data;
-            }
-        }
+        // Parse JSON data - FIXED: use 'results_data'
+        $urinalysisData = $urinalysis ? $urinalysis->results_data : null;
+        $hcgData = $hcg ? $hcg->results_data : null;
         
-        return view('patient.results', compact('kit', 'patient', 'urinalysisData', 'fecalysisData', 'hcgData'));
+        // Debug: Check if data exists
+        \Log::info('Kit ID: ' . $kit->id);
+        \Log::info('Test Results Count: ' . $testResults->count());
+        \Log::info('Urinalysis Data: ', ['data' => $urinalysisData]);
+        \Log::info('HCG Data: ', ['data' => $hcgData]);
+        
+        return view('patient.results', compact('kit', 'patient', 'urinalysisData', 'hcgData'));
     }
     
-    public function downloadPDF($kit_code, $dob)
+    public function downloadPDF(Request $request, $kit_code, $dob)
     {
+        
+        
         // Find the kit
-        $kit = Kit::where('kit_code', $kit_code)->first();
+        $kit = Kit::where('kit_code', $kit_code)->firstOrFail();
         
-        if (!$kit) {
-            abort(404, 'Results not found');
-        }
-        
-        $patient = Patient::find($kit->patient_id);
-        
-        // Verify date of birth
-        if ($patient->date_of_birth != $dob) {
-            abort(403, 'Unauthorized access');
-        }
+        // Find the patient
+        $patient = Patient::findOrFail($kit->patient_id);
         
         // Get test results
         $testResults = TestResult::where('kit_id', $kit->id)->get();
         
-        // Parse results data
-        $urinalysisData = null;
-        $fecalysisData = null;
-        $hcgData = null;
+        // Extract specific test results
+        $urinalysis = $testResults->where('test_type', 'urinalysis')->first();
+        $hcg = $testResults->where('test_type', 'hcg')->first();
         
-        foreach ($testResults as $result) {
-            if (str_contains($result->test_type, 'Urinalysis')) {
-                $urinalysisData = $result->results_data;
-            } elseif (str_contains($result->test_type, 'Fecalysis')) {
-                $fecalysisData = $result->results_data;
-            } elseif (str_contains($result->test_type, 'HCG')) {
-                $hcgData = $result->results_data;
-            }
-        }
+        // Get the results data
+        $urinalysisData = $urinalysis ? $urinalysis->results_data : null;
+        $hcgData = $hcg ? $hcg->results_data : null;
         
-        $pdf = PDF::loadView('patient.pdf-report', compact('kit', 'patient', 'urinalysisData', 'fecalysisData', 'hcgData'));
-        $pdf->setPaper('A4', 'portrait');
+        // Load PDF view
+        $pdf = app('dompdf.wrapper');
+        $pdf->loadView('patient.pdf-report', compact('kit', 'patient', 'urinalysisData', 'hcgData'));
         
-        return $pdf->download('lab-results-' . $kit->kit_code . '.pdf');
+        return $pdf->download("lab-results-{$kit->kit_code}.pdf");
     }
 }

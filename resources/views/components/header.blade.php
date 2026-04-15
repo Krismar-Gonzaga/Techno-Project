@@ -1,22 +1,21 @@
-<header class="w-full bg-white border-b border-gray-100 px-8 py-4 flex justify-between items-center shadow-sm">
+<header class="w-full bg-white/80 backdrop-blur-md px-12 py-5 flex justify-between items-center">
     <div class="flex items-center space-x-2">
-        <div class="text-[#0D7A5F] text-xl font-bold flex items-center">
+        <div class="text-[#0D7A5F] text-lg font-bold flex items-center tracking-tight">
             <i class="fas fa-shield-halved mr-2"></i> Serene Portal
         </div>
     </div>
     
-    <nav class="flex items-center space-x-8 text-sm font-medium text-gray-600">
-        <a href="{{ route('patient.access.form') }}" class="hover:text-[#0D7A5F] {{ request()->routeIs('patient.access.*') ? 'text-[#0D7A5F] border-b-2 border-[#0D7A5F] pb-1' : '' }}">
-            Access view Result
-        </a>
-        <a href="{{ route('login') }}" class="hover:text-[#0D7A5F] {{ request()->routeIs('login') ? 'text-[#0D7A5F] border-b-2 border-[#0D7A5F] pb-1' : '' }}">
-            Login as admin
-        </a>
+    <nav class="flex items-center space-x-8 text-[11px] font-bold uppercase tracking-wider">
+        @guest
+            <a href="{{ route('patient.access.form') }}" class="text-[#0D7A5F] border-b-2 border-[#0D7A5F] pb-1">Access view Result</a>
+            <a href="{{ route('login') }}" class="text-gray-400 hover:text-[#0D7A5F] transition">Login as admin</a>
+        @endguest
     </nav>
 
-    <div class="text-gray-400 cursor-pointer">
-        <i class="far fa-question-circle text-xl"></i>
+    <div class="alignment-right text-gray-400 hover:text-gray-600 cursor-pointer transition">
+        <i class="far fa-question-circle text-lg"></i>
     </div>
+
     <!-- User Menu -->
     <div class="relative" x-data="{ open: false }">
         <button @click="open = !open" class="flex items-center space-x-3 hover:bg-gray-50 rounded-lg px-3 py-2 transition">

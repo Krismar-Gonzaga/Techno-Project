@@ -4,142 +4,382 @@
     <meta charset="utf-8">
     <title>Lab Results - {{ $kit->kit_code }}</title>
     <style>
+        @page { 
+            margin: 40px; 
+            bottom: 20px;
+        }
         body {
             font-family: 'Helvetica', 'Arial', sans-serif;
-            line-height: 1.6;
-            color: #333;
+            color: #1a202c;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
         }
-        .header {
-            text-align: center;
-            border-bottom: 2px solid #0D7A5F;
-            padding-bottom: 20px;
+        /* Header Section */
+        .header-table {
+            width: 100%;
             margin-bottom: 30px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 15px;
         }
-        .logo {
-            font-size: 24px;
+        .logo-text {
+            color: #0D7A5F;
+            font-weight: bold;
+            font-size: 20px;
+            letter-spacing: -0.5px;
+        }
+        .date-header {
+            text-align: right;
+            text-transform: uppercase;
+            font-size: 11px;
+            color: #718096;
+            font-weight: bold;
+        }
+        /* Patient Info Block */
+        .patient-info {
+            background: #f7fafc;
+            padding: 15px;
+            text-align: right;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 12px;
+        }
+        .patient-info-row {
+            margin-bottom: 5px;
+        }
+        .patient-info b { 
+            color: #4a5568; 
+            display: inline-block;
+            width: 100px;
+        }
+
+        
+
+        /* Section Styling */
+        .section-container {
+            border: 1px solid #edf2f7;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+        }
+        .section-header {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        .section-title {
+            font-size: 18px;
             font-weight: bold;
             color: #0D7A5F;
         }
-        .collection-date {
-            text-align: right;
-            color: #666;
-            margin-bottom: 20px;
-        }
-        .success-box {
-            background-color: #d1fae5;
-            border-left: 4px solid #059669;
-            padding: 15px;
-            margin-bottom: 30px;
-        }
-        .section {
-            margin-bottom: 30px;
-            page-break-inside: avoid;
-        }
-        .section-title {
-            background-color: #f3f4f6;
-            padding: 10px 15px;
+        .status-badge {
+            font-size: 10px;
+            color: #0D7A5F;
             font-weight: bold;
-            border-bottom: 2px solid #0D7A5F;
-            margin-bottom: 15px;
+            text-transform: uppercase;
+            background: #E8F5F1;
+            padding: 2px 8px;
+            border-radius: 12px;
+            margin-left: 10px;
         }
-        table {
+        .collection-date {
+            font-size: 10px;
+            color: #718096;
+            margin-top: 5px;
+        }
+
+        /* Data Tables */
+        .data-label {
+            font-size: 11px;
+            font-weight: bold;
+            color: #0D7A5F;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            margin-top: 20px;
+        }
+        .data-label:first-of-type {
+            margin-top: 0;
+        }
+        .results-table {
             width: 100%;
             border-collapse: collapse;
+        }
+        .results-table td {
+            padding: 10px 0;
+            border-bottom: 1px solid #f7fafc;
+            font-size: 12px;
+        }
+        .param-name { 
+            color: #2d3748; 
+            font-weight: 500; 
+        }
+        .param-value { 
+            text-align: right; 
+            font-weight: bold; 
+            color: #1a202c; 
+        }
+        .normal-tag {
+            background: #E8F5F1;
+            color: #0D7A5F;
+            font-size: 9px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+            margin-left: 8px;
+            display: inline-block;
+        }
+        .green-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: #0D7A5F;
+            border-radius: 50%;
+            margin-left: 8px;
+        }
+        .ref-range {
+            font-size: 9px;
+            color: #718096;
+            margin-left: 8px;
+            font-weight: normal;
+        }
+        .data-grid {
+            display: table;
+            width: 100%;
             margin-bottom: 15px;
         }
-        th, td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #e5e7eb;
+        .data-card {
+            background: #f7fafc;
+            padding: 12px;
+            border-radius: 10px;
+            display: inline-block;
+            width: 48%;
+            margin-right: 2%;
+            vertical-align: top;
         }
-        .status-normal {
-            color: #059669;
+        .data-card-label {
+            font-size: 9px;
+            color: #718096;
+            text-transform: uppercase;
             font-weight: bold;
+            margin-bottom: 5px;
         }
-        .footer {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid #e5e7eb;
+        .data-card-value {
+            font-size: 14px;
+            font-weight: bold;
+            color: #1a202c;
+        }
+
+        /* Plain Language Summary */
+        .summary-box {
+            background-color: #f7fafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            page-break-inside: avoid;
+        }
+        .summary-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #0D7A5F;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .summary-text {
             font-size: 12px;
-            color: #666;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 9px;
+            color: #a0aec0;
+            border-top: 1px solid #edf2f7;
+            padding-top: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="logo">SERENE PORTAL</div>
-        <p>Medical Laboratory Results</p>
+
+    <table class="header-table" width="100%">
+        <tr>
+            <td width="60%" class="logo-text">
+                🔬 Serene Portal
+            </td>
+            <td width="40%" class="date-header">
+                Report Date: {{ now()->format('M d, Y') }}
+            </td>
+        </tr>
+    </table>
+
+    <div class="patient-info">
+        <div class="patient-info-row">
+            <b>Patient Name:</b> {{ $patient->name ?? 'N/A' }}
+        </div>
+        <div class="patient-info-row">
+            <b>Date of Birth:</b> {{ $patient->date_of_birth instanceof \DateTime ? $patient->date_of_birth->format('F d, Y') : ($patient->date_of_birth ? date('F d, Y', strtotime($patient->date_of_birth)) : 'N/A') }}
+        </div>
+        <div class="patient-info-row">
+            <b>Kit Code:</b> {{ $kit->kit_code }}
+        </div>
+        <div class="patient-info-row">
+            <b>Collection Date:</b> {{ $kit->collection_date instanceof \DateTime ? $kit->collection_date->format('F d, Y') : ($kit->collection_date ? date('F d, Y', strtotime($kit->collection_date)) : 'Not specified') }}
+        </div>
     </div>
+
     
-    <div class="collection-date">
-        Collection Date: {{ $kit->collection_date->format('F d, Y') }}
-    </div>
-    
-    <div class="success-box">
-        <strong>✓ All results within normal range</strong><br>
-        Your clinical indicators suggest optimal health levels across all tested categories.
-    </div>
-    
-    @if($urinalysisData)
-    <div class="section">
-        <div class="section-title">Urinalysis</div>
-        <p><strong>Status:</strong> <span class="status-normal">Normal</span></p>
-        
-        <h4>Physical Data</h4>
-        <table>
-            <tr><th>Parameter</th><th>Result</th><th>Status</th><th>Reference Range</th></tr>
-            <tr><td>Color</td><td>{{ $urinalysisData['color'] ?? 'Straw' }}</td><td class="status-normal">Normal</td><td>Straw/Yellow</td></tr>
-            <tr><td>Clarity</td><td>{{ $urinalysisData['clarity'] ?? 'Clear' }}</td><td class="status-normal">Normal</td><td>Clear</td></tr>
-            <tr><td>Glucose</td><td>{{ $urinalysisData['glucose'] ?? 'Negative' }}</td><td class="status-normal">Normal</td><td>Negative</td></tr>
-            <tr><td>Protein</td><td>{{ $urinalysisData['protein'] ?? 'Negative' }}</td><td class="status-normal">Normal</td><td>Negative</td></tr>
-            <tr><td>pH</td><td>6.0</td><td class="status-normal">Normal</td><td>4.5 - 8.0</td></tr>
+
+    @php
+        // Parse results data if it's stored as JSON string
+        $urinalysisDataArray = is_string($urinalysisData ?? null) ? json_decode($urinalysisData, true) : ($urinalysisData ?? []);
+        $hcgDataArray = is_string($hcgData ?? null) ? json_decode($hcgData, true) : ($hcgData ?? []);
+    @endphp
+
+    @if($urinalysisDataArray)
+    <div class="section-container">
+        <div class="section-header">
+            <div class="section-title">
+                Urinalysis 
+                <span class="status-badge">✓ Status: Normal</span>
+            </div>
+            <div class="collection-date">
+                Analysis Date: {{ $kit->collection_date instanceof \DateTime ? $kit->collection_date->format('M d, Y') : ($kit->collection_date ? date('M d, Y', strtotime($kit->collection_date)) : 'Current') }}
+            </div>
+        </div>
+
+        <!-- Physical Data -->
+        <div class="data-label">Physical & Chemical Data</div>
+        <div class="data-grid">
+            <div class="data-card">
+                <div class="data-card-label">Color</div>
+                <div class="data-card-value">{{ $urinalysisDataArray['color'] ?? 'Straw' }}</div>
+                <span class="normal-tag">NORMAL</span>
+            </div>
+            <div class="data-card">
+                <div class="data-card-label">Clarity / Transparency</div>
+                <div class="data-card-value">{{ $urinalysisDataArray['clarity'] ?? 'Clear' }}</div>
+                <span class="normal-tag">NORMAL</span>
+            </div>
+        </div>
+
+        <!-- Chemical Data Table -->
+        <table class="results-table">
+            <tr>
+                <td class="param-name">Glucose</td>
+                <td class="param-value">
+                    {{ $urinalysisDataArray['glucose'] ?? 'Negative' }}
+                    <span class="green-dot"></span>
+                    <span class="ref-range">Ref: Negative</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="param-name">Protein</td>
+                <td class="param-value">
+                    {{ $urinalysisDataArray['protein'] ?? 'Negative' }}
+                    <span class="green-dot"></span>
+                    <span class="ref-range">Ref: Negative</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="param-name">pH</td>
+                <td class="param-value">
+                    {{ $urinalysisDataArray['ph'] ?? '6.0' }}
+                    <span class="green-dot"></span>
+                    <span class="ref-range">Ref: 5.0 - 8.0</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="param-name">Specific Gravity</td>
+                <td class="param-value">
+                    {{ $urinalysisDataArray['specific_gravity'] ?? '1.015' }}
+                    <span class="green-dot"></span>
+                    <span class="ref-range">Ref: 1.005 - 1.030</span>
+                </td>
+            </tr>
         </table>
-        
-        <h4>Microscopic Data</h4>
-        <table>
-            <tr><th>Parameter</th><th>Result</th><th>Status</th><th>Reference Range</th></tr>
-            <tr><td>RBC</td><td>{{ $urinalysisData['rbc'] ?? '0-2' }} /hpf</td><td class="status-normal">Normal</td><td>0-3 /hpf</td></tr>
-            <tr><td>WBC</td><td>{{ $urinalysisData['wbc'] ?? '1-3' }} /hpf</td><td class="status-normal">Normal</td><td>0-5 /hpf</td></tr>
+
+        <!-- Microscopic Data -->
+        <div class="data-label">Microscopic Data</div>
+        <table class="results-table">
+            <tr>
+                <td class="param-name">Red Blood Cells (RBC)</td>
+                <td class="param-value">
+                    {{ $urinalysisDataArray['rbc'] ?? '0-2' }} /hpf
+                    <span class="green-dot"></span>
+                    <span class="ref-range">Ref: 0-3 /hpf</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="param-name">White Blood Cells (WBC)</td>
+                <td class="param-value">
+                    {{ $urinalysisDataArray['wbc'] ?? '1-3' }} /hpf
+                    <span class="green-dot"></span>
+                    <span class="ref-range">Ref: 0-5 /hpf</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="param-name">Epithelial Cells</td>
+                <td class="param-value">
+                    {{ $urinalysisDataArray['epithelial_cells'] ?? 'Few' }}
+                    <span class="green-dot"></span>
+                    <span class="ref-range">Ref: Few</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="param-name">Bacteria</td>
+                <td class="param-value">
+                    {{ $urinalysisDataArray['bacteria'] ?? 'None Seen' }}
+                    <span class="green-dot"></span>
+                    <span class="ref-range">Ref: None</span>
+                </td>
+            </tr>
         </table>
     </div>
     @endif
-    
-    @if($fecalysisData)
-    <div class="section">
-        <div class="section-title">Fecalysis</div>
-        <p><strong>Status:</strong> <span class="status-normal">Normal</span></p>
-        
-        <table>
-            <tr><th>Parameter</th><th>Result</th><th>Status</th></tr>
-            <tr><td>Consistency</td><td>{{ $fecalysisData['consistency'] ?? 'Soft' }}</td><td class="status-normal">Normal</td></tr>
-            <tr><td>Color</td><td>{{ $fecalysisData['color'] ?? 'Brown' }}</td><td class="status-normal">Normal</td></tr>
-            <tr><td>Ova or Parasites</td><td>{{ $fecalysisData['ova_parasites'] ?? 'None Seen' }}</td><td class="status-normal">Normal</td></tr>
-            <tr><td>Occult Blood</td><td>{{ $fecalysisData['occult_blood'] ?? 'Negative' }}</td><td class="status-normal">Normal</td></tr>
+
+    @if($hcgDataArray)
+    <div class="section-container">
+        <div class="section-header">
+            <div class="section-title">
+                Urine HCG 
+                <span class="status-badge">✓ Result Ready</span>
+            </div>
+        </div>
+
+        <table class="results-table">
+            <tr>
+                <td class="param-name">Pregnancy Test (HCG)</td>
+                <td class="param-value">
+                    <strong>{{ $hcgDataArray['result'] ?? 'Negative' }}</strong>
+                    <span class="green-dot"></span>
+                </td>
+            </tr>
+            @if(isset($hcgDataArray['notes']))
+            <tr>
+                <td class="param-name">Interpretation</td>
+                <td class="param-value" style="font-weight: normal;">
+                    {{ $hcgDataArray['notes'] }}
+                </td>
+            </tr>
+            @endif
         </table>
     </div>
     @endif
-    
-    @if($hcgData)
-    <div class="section">
-        <div class="section-title">Urine HCG</div>
-        <p><strong>Result:</strong> Negative</p>
-        <p><strong>Status:</strong> <span class="status-normal">Result Ready</span></p>
+
+    <div class="summary-box">
+        <div class="summary-title">📋 Plain-Language Summary</div>
+        <div class="summary-text">
+            {{ $kit->summary ?? 'Overall, your results are consistent with healthy indicators. Your clinical indicators suggest optimal health levels across all tested categories. We recommend discussing these details with your primary physician at your next visit.' }}
+        </div>
     </div>
-    @endif
-    
-    <div class="section">
-        <h4>Plain-Language Summary</h4>
-        <p>Overall, your results are consistent with healthy indicators. While one value is slightly outside the typical range, 
-        it's common and usually not a cause for concern. We recommend discussing these details with your primary physician 
-        at your next visit.</p>
-    </div>
-    
+
     <div class="footer">
-        <p><strong>VERIFIED BY SERENE MEDICAL TEAM</strong></p>
-        <p>These results are shared as part of your digital medical record. Please consult with your attending physician 
-        to discuss these findings in the context of your overall health.</p>
-        <p>Generated on {{ now()->format('F d, Y \a\t h:i A') }}</p>
+        <strong>Verified by Serene Medical Team</strong><br>
+        This is an electronically generated report. No signature is required.<br>
+        Generated on {{ now()->format('F d, Y \a\t H:i:s') }}
     </div>
+
 </body>
 </html>

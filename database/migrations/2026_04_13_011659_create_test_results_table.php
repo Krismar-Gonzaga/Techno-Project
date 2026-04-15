@@ -11,8 +11,8 @@ return new class extends Migration
         Schema::create('test_results', function (Blueprint $table) {
             $table->id();
             $table->foreignId('kit_id')->constrained()->onDelete('cascade');
-            $table->string('test_type');
-            $table->json('results_data');
+            $table->string('test_type')->nullable();
+            $table->json('results_data')->nullable();
             $table->timestamp('released_at')->nullable();
             $table->timestamps();
         });
