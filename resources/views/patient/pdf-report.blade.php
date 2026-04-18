@@ -352,7 +352,7 @@
             <tr>
                 <td class="param-name">Pregnancy Test (HCG)</td>
                 <td class="param-value">
-                    <strong>{{ $hcgDataArray['result'] ?? 'Negative' }}</strong>
+                    <strong>{{ $hcgDataArray['hcg_result'] ?? 'Negative' }}</strong>
                     <span class="green-dot"></span>
                 </td>
             </tr>

@@ -137,4 +137,57 @@
         </div>
     </form>
 </div>
+
+@push('scripts')
+<script>
+function generateKitCode() {
+    // Get current timestamp
+    const timestamp = Date.now();
+    
+    // Generate random 4-digit number
+    const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+    
+    // Get current date components
+    const now = new Date();
+    const year = now.getFullYear().toString().slice(-2);
+    const month = (now.getMonth() + 1).toString().padStart(2, '0');
+    const day = now.getDate().toString().padStart(2, '0');
+    
+    // Option 1: Format: SK-YYMMDD-RANDOM (e.g., SK-241215-3829)
+    const kitCode = `SK-${year}${month}${day}-${random}`;
+    
+    // Option 2: Format: KIT-YYMMDD-RANDOM (uncomment to use this)
+    // const kitCode = `KIT-${year}${month}${day}-${random}`;
+    
+    // Option 3: Format: YYMMDD-RANDOM-KIT (uncomment to use this)
+    // const kitCode = `${year}${month}${day}-${random}-KIT`;
+    
+    // Set the generated code to the input field
+    document.getElementById('kit_code').value = kitCode;
+    
+    // Optional: Add a subtle animation effect
+    const inputField = document.getElementById('kit_code');
+    inputField.style.transform = 'scale(1.02)';
+    setTimeout(() => {
+        inputField.style.transform = 'scale(1)';
+    }, 200);
+    
+    // Optional: Show success toast/notification
+    console.log('Kit code generated:', kitCode);
+}
+
+// Generate initial kit code when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    generateKitCode();
+});
+
+// Optional: Add keyboard shortcut (Ctrl+G or Cmd+G) to generate new code
+document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'g') {
+        e.preventDefault();
+        generateKitCode();
+    }
+});
+</script>
+@endpush
 @endsection

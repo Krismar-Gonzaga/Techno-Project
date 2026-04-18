@@ -7,8 +7,14 @@
     
     <nav class="flex items-center space-x-8 text-[11px] font-bold uppercase tracking-wider">
         @guest
-            <a href="{{ route('patient.access.form') }}" class="text-[#0D7A5F] border-b-2 border-[#0D7A5F] pb-1">Access view Result</a>
-            <a href="{{ route('login') }}" class="text-gray-400 hover:text-[#0D7A5F] transition">Login as admin</a>
+            <a href="{{ route('patient.access.form') }}" 
+               class="text-[#0D7A5F] hover:text-[#0D7A5F] transition pb-1 {{ request()->routeIs('patient.access.form') ? 'border-b-2 border-[#0D7A5F]' : 'border-b-2 border-transparent' }}">
+                Access view Result
+            </a>
+            <a href="{{ route('login') }}" 
+               class="transition pb-1 {{ request()->routeIs('login') ? 'text-[#0D7A5F] border-b-2 border-[#0D7A5F]' : 'text-gray-400 hover:text-[#0D7A5F] border-b-2 border-transparent' }}">
+                Login as admin
+            </a>
         @endguest
     </nav>
 
@@ -16,7 +22,8 @@
         <i class="far fa-question-circle text-lg"></i>
     </div>
 
-    <!-- User Menu -->
+    <!-- User Menu - Only shown when logged in -->
+    @auth
     <div class="relative" x-data="{ open: false }">
         <button @click="open = !open" class="flex items-center space-x-3 hover:bg-gray-50 rounded-lg px-3 py-2 transition">
             <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
@@ -50,4 +57,5 @@
             </form>
         </div>
     </div>
+    @endauth
 </header>

@@ -169,6 +169,149 @@
         </div>
         @endif
 
+        <!-- Fecalysis Section -->
+        @if($fecalysisData)        
+        <div class="result-card">
+            <div class="p-8 flex justify-between items-center cursor-pointer" onclick="toggleFecalysis()">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 bg-[#E8F3F0] rounded-2xl flex items-center justify-center">
+                        <i class="fas fa-poop text-[#0D7A5F]"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-gray-800">Fecalysis</h2>
+                        <p class="text-[11px] text-[#0D7A5F] font-bold uppercase tracking-wider flex items-center">
+                            <span class="status-dot mr-2"></span> Status: {{ $fecalysisData['status'] ?? 'Normal' }}
+                        </p>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-down text-gray-300" id="fecalysisIcon"></i>
+            </div>
+            
+            <div id="fecalysisContent" class="px-8 pb-8 space-y-8" style="display: none;">
+                <!-- Physical Characteristics -->
+                <div>
+                    <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Physical Characteristics</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="data-pill">
+                            <span class="block text-[10px] text-gray-400 font-bold uppercase mb-2">Color</span>
+                            <span class="font-bold text-gray-800 block">{{ $fecalysisData['color'] ?? 'Brown' }}</span>
+                            <span class="text-[9px] font-bold text-[#0D7A5F] mt-1 inline-block">{{ $fecalysisData['color_status'] ?? 'NORMAL' }}</span>
+                        </div>
+                        <div class="data-pill">
+                            <span class="block text-[10px] text-gray-400 font-bold uppercase mb-2">Consistency</span>
+                            <span class="font-bold text-gray-800 block">{{ $fecalysisData['consistency'] ?? 'Formed' }}</span>
+                            <span class="text-[9px] font-bold text-[#0D7A5F] mt-1 inline-block">{{ $fecalysisData['consistency_status'] ?? 'NORMAL' }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Microscopic Examination -->
+                <div>
+                    <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Microscopic Examination</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-sm font-medium text-gray-600">Pus Cells (WBC)</span>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-xs text-gray-400 italic">Ref: 0-5 /hpf</span>
+                                <span class="text-sm font-bold text-gray-800">{{ $fecalysisData['pus_cells'] ?? '0-2' }} /hpf</span>
+                                <span class="status-dot"></span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-sm font-medium text-gray-600">RBC</span>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-xs text-gray-400 italic">Ref: 0 /hpf</span>
+                                <span class="text-sm font-bold text-gray-800">{{ $fecalysisData['rbc'] ?? '0' }} /hpf</span>
+                                <span class="status-dot"></span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-sm font-medium text-gray-600">Fat Globules</span>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-xs text-gray-400 italic">Ref: Rare /hpf</span>
+                                <span class="text-sm font-bold text-gray-800">{{ $fecalysisData['fat_globules'] ?? 'Rare' }}</span>
+                                <span class="status-dot"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parasitology -->
+                <div>
+                    <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Parasitology</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-sm font-medium text-gray-600">Ova / Parasites</span>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-xs text-gray-400 italic">Ref: None seen</span>
+                                <span class="text-sm font-bold text-gray-800">{{ $fecalysisData['ova_parasites'] ?? 'None seen' }}</span>
+                                <span class="status-dot"></span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-sm font-medium text-gray-600">Cysts</span>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-xs text-gray-400 italic">Ref: None seen</span>
+                                <span class="text-sm font-bold text-gray-800">{{ $fecalysisData['cysts'] ?? 'None seen' }}</span>
+                                <span class="status-dot"></span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-sm font-medium text-gray-600">Trophozoites</span>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-xs text-gray-400 italic">Ref: None seen</span>
+                                <span class="text-sm font-bold text-gray-800">{{ $fecalysisData['trophozoites'] ?? 'None seen' }}</span>
+                                <span class="status-dot"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chemical Tests -->
+                @if(isset($fecalysisData['occult_blood']) || isset($fecalysisData['reducing_substances']))
+                <div>
+                    <h3 class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4">Chemical Tests</h3>
+                    <div class="space-y-3">
+                        @if(isset($fecalysisData['occult_blood']))
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-sm font-medium text-gray-600">Occult Blood</span>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-xs text-gray-400 italic">Ref: Negative</span>
+                                <span class="text-sm font-bold text-gray-800">{{ $fecalysisData['occult_blood'] ?? 'Negative' }}</span>
+                                <span class="status-dot"></span>
+                            </div>
+                        </div>
+                        @endif
+                        @if(isset($fecalysisData['reducing_substances']))
+                        <div class="flex justify-between items-center py-1">
+                            <span class="text-sm font-medium text-gray-600">Reducing Substances</span>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-xs text-gray-400 italic">Ref: Negative</span>
+                                <span class="text-sm font-bold text-gray-800">{{ $fecalysisData['reducing_substances'] ?? 'Negative' }}</span>
+                                <span class="status-dot"></span>
+                            </div>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+                @endif
+
+                <!-- Additional Notes -->
+                @if(isset($fecalysisData['notes']))
+                <div class="bg-amber-50 p-4 rounded-xl">
+                    <div class="flex items-start space-x-3">
+                        <i class="fas fa-sticky-note text-amber-600 mt-0.5"></i>
+                        <div>
+                            <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider">Clinical Notes</span>
+                            <p class="text-xs text-gray-700 mt-1">{{ $fecalysisData['notes'] }}</p>
+                        </div>
+                    </div>
+                </div>
+                @endif
+            </div>
+        </div>
+        @endif
+
         <!-- Urine HCG Section -->
         @if($hcgData)
         <div class="result-card">
@@ -193,7 +336,7 @@
             </div>
             <div id="hcgContent" class="px-8 pb-8 text-center" style="display: none;">
                 <div class="data-pill">
-                    <p class="text-sm font-bold text-gray-800">Result: {{ $hcgData['result'] ?? 'Negative' }}</p>
+                    <p class="text-sm font-bold text-gray-800">Result: {{ $hcgData['hcg_result'] ?? 'Negative' }}</p>
                     <p class="text-xs text-gray-500 mt-2">{{ $hcgData['notes'] ?? 'No pregnancy detected' }}</p>
                 </div>
             </div>
@@ -240,6 +383,21 @@
         function toggleUrinalysis() {
             const content = document.getElementById('urinalysisContent');
             const icon = document.getElementById('urinalysisIcon');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            } else {
+                content.style.display = 'none';
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
+        }
+
+        function toggleFecalysis() {
+            const content = document.getElementById('fecalysisContent');
+            const icon = document.getElementById('fecalysisIcon');
             
             if (content.style.display === 'none') {
                 content.style.display = 'block';

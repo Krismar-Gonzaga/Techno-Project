@@ -29,18 +29,21 @@ class PatientResultController extends Controller
         // Extract specific test results - FIXED: use 'results_data'
         $urinalysis = $testResults->where('test_type', 'urinalysis')->first();
         $hcg = $testResults->where('test_type', 'hcg')->first();
+        $fecalysis = $testResults->where('test_type', 'fecalysis')->first(); // Added Fecalysis
         
-        // Parse JSON data - FIXED: use 'results_data'
-        $urinalysisData = $urinalysis ? $urinalysis->results_data : null;
+        // Parse JSON data
+        $urinalysisData = $urinalysis ? $urinalysis->results_data['urinalysis'] : null;
         $hcgData = $hcg ? $hcg->results_data : null;
+        $fecalysisData = $fecalysis && isset($fecalysis->results_data['fecalysis']) ? $fecalysis->results_data['fecalysis'] : null; // Added Fecalysis data
         
         // Debug: Check if data exists
         \Log::info('Kit ID: ' . $kit->id);
         \Log::info('Test Results Count: ' . $testResults->count());
         \Log::info('Urinalysis Data: ', ['data' => $urinalysisData]);
         \Log::info('HCG Data: ', ['data' => $hcgData]);
+        \Log::info('Fecalysis Data: ', ['data' => $fecalysisData]); // Added debug
         
-        return view('patient.results', compact('kit', 'patient', 'urinalysisData', 'hcgData'));
+        return view('patient.results', compact('kit', 'patient', 'urinalysisData', 'hcgData', 'fecalysisData'));
     }
     
     public function downloadPDF(Request $request, $kit_code, $dob)
@@ -59,14 +62,16 @@ class PatientResultController extends Controller
         // Extract specific test results
         $urinalysis = $testResults->where('test_type', 'urinalysis')->first();
         $hcg = $testResults->where('test_type', 'hcg')->first();
+        $fecalysis = $testResults->where('test_type', 'fecalysis')->first(); // Added Fecalysis
         
         // Get the results data
-        $urinalysisData = $urinalysis ? $urinalysis->results_data : null;
+        $urinalysisData = $urinalysis ? $urinalysis->results_data['urinalysis'] : null;
         $hcgData = $hcg ? $hcg->results_data : null;
+        $fecalysisData = $fecalysis ? $fecalysis->results_data['fecalysis'] : null; // Added Fecalysis data
         
         // Load PDF view
         $pdf = app('dompdf.wrapper');
-        $pdf->loadView('patient.pdf-report', compact('kit', 'patient', 'urinalysisData', 'hcgData'));
+        $pdf->loadView('patient.pdf-report', compact('kit', 'patient', 'urinalysisData', 'hcgData', 'fecalysisData'));
         
         return $pdf->download("lab-results-{$kit->kit_code}.pdf");
     }

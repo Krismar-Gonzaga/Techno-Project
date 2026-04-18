@@ -111,35 +111,179 @@
             <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 p-8">
                 <div class="flex items-center space-x-4 mb-10">
                     <div class="w-12 h-12 bg-[#E8F5F1] rounded-2xl flex items-center justify-center">
-                        <i class="fas fa-chart-simple text-[#0D7A5F] text-xl"></i>
+                        <i class="fas fa-poop text-[#0D7A5F] text-xl"></i>
                     </div>
                     <h2 class="text-xl font-bold text-gray-800">Fecalysis Form</h2>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-[#F4F9F7]/50 border border-gray-50 rounded-2xl p-6">
-                        <h4 class="text-[10px] font-bold text-[#0D7A5F] uppercase mb-4 tracking-widest">Macroscopic</h4>
-                        <div class="space-y-4">
-                            <input type="text" name="fecalysis[consistency]" placeholder="Consistency..." class="w-full bg-white border-none rounded-xl px-4 py-2.5 text-sm shadow-sm">
-                            <input type="text" name="fecalysis[color]" placeholder="Color..." class="w-full bg-white border-none rounded-xl px-4 py-2.5 text-sm shadow-sm">
-                        </div>
-                    </div>
-                    <div class="bg-[#F4F9F7]/50 border border-gray-50 rounded-2xl p-6">
-                        <h4 class="text-[10px] font-bold text-[#0D7A5F] uppercase mb-4 tracking-widest">Parasitology</h4>
-                        <div class="space-y-4">
-                            <input type="text" name="fecalysis[ova]" placeholder="Ova or Parasites..." class="w-full bg-white border-none rounded-xl px-4 py-2.5 text-sm shadow-sm">
-                            <input type="text" name="fecalysis[protozoa]" placeholder="Protozoa..." class="w-full bg-white border-none rounded-xl px-4 py-2.5 text-sm shadow-sm">
-                        </div>
-                    </div>
-                    <div class="bg-[#F4F9F7]/50 border border-gray-50 rounded-2xl p-6">
-                        <h4 class="text-[10px] font-bold text-[#0D7A5F] uppercase mb-4 tracking-widest">Observations</h4>
-                        <div class="space-y-4">
-                            <select name="fecalysis[occult_blood]" class="w-full bg-white border-none rounded-xl px-4 py-2.5 text-sm shadow-sm">
-                                <option>Occult Blood: Negative</option>
-                                <option>Positive</option>
+                <!-- Physical Characteristics -->
+                <div class="mb-10">
+                    <h3 class="text-xs font-bold text-[#4AA6EF] uppercase tracking-widest border-b border-gray-50 pb-4 mb-6">Physical Characteristics</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-[#F4F9F7] rounded-xl p-5">
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-3">Color</label>
+                            <select name="fecalysis[color]" class="w-full bg-white border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#0D7A5F]">
+                                <option value="Brown" selected>Brown</option>
+                                <option value="Yellow">Yellow</option>
+                                <option value="Green">Green</option>
+                                <option value="Black">Black</option>
+                                <option value="Red">Red</option>
+                                <option value="Pale/Clay">Pale/Clay</option>
                             </select>
-                            <input type="text" name="fecalysis[fat]" placeholder="Fat Globules..." class="w-full bg-white border-none rounded-xl px-4 py-2.5 text-sm shadow-sm">
+                            <div class="mt-2 flex items-center justify-between">
+                                <span class="text-[9px] font-bold text-gray-400">Reference Range</span>
+                                <span class="text-[9px] font-bold text-[#0D7A5F] bg-white px-2 py-0.5 rounded">NORMAL</span>
+                            </div>
                         </div>
+                        <div class="bg-[#F4F9F7] rounded-xl p-5">
+                            <label class="block text-[10px] font-bold text-gray-400 uppercase mb-3">Consistency</label>
+                            <select name="fecalysis[consistency]" class="w-full bg-white border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#0D7A5F]">
+                                <option value="Formed" selected>Formed</option>
+                                <option value="Semi-formed">Semi-formed</option>
+                                <option value="Soft">Soft</option>
+                                <option value="Loose">Loose</option>
+                                <option value="Watery">Watery</option>
+                                <option value="Hard">Hard</option>
+                            </select>
+                            <div class="mt-2 flex items-center justify-between">
+                                <span class="text-[9px] font-bold text-gray-400">Reference Range</span>
+                                <span class="text-[9px] font-bold text-[#0D7A5F] bg-white px-2 py-0.5 rounded">NORMAL</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Microscopic Examination -->
+                <div class="mb-10">
+                    <h3 class="text-xs font-bold text-[#4AA6EF] uppercase tracking-widest border-b border-gray-50 pb-4 mb-6">Microscopic Examination</h3>
+                    <div class="space-y-4">
+                        <div class="bg-[#F4F9F7] rounded-xl p-5">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Pus Cells (WBC)</label>
+                                    <select name="fecalysis[pus_cells]" class="w-full bg-white border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#0D7A5F]">
+                                        <option value="0-2 /hpf" selected>0-2 /hpf</option>
+                                        <option value="3-5 /hpf">3-5 /hpf</option>
+                                        <option value="6-10 /hpf">6-10 /hpf</option>
+                                        <option value="11-20 /hpf">11-20 /hpf</option>
+                                        <option value=">20 /hpf">&gt;20 /hpf</option>
+                                    </select>
+                                </div>
+                                <div class="ml-4 text-right">
+                                    <span class="text-[9px] font-bold text-gray-400 block">Reference Range</span>
+                                    <span class="text-[9px] font-bold text-gray-500">0-5 /hpf</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-[#F4F9F7] rounded-xl p-5">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">RBC</label>
+                                    <select name="fecalysis[rbc]" class="w-full bg-white border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#0D7A5F]">
+                                        <option value="0 /hpf" selected>0 /hpf</option>
+                                        <option value="1-2 /hpf">1-2 /hpf</option>
+                                        <option value="3-5 /hpf">3-5 /hpf</option>
+                                        <option value="6-10 /hpf">6-10 /hpf</option>
+                                        <option value=">10 /hpf">&gt;10 /hpf</option>
+                                    </select>
+                                </div>
+                                <div class="ml-4 text-right">
+                                    <span class="text-[9px] font-bold text-gray-400 block">Reference Range</span>
+                                    <span class="text-[9px] font-bold text-gray-500">0 /hpf</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-[#F4F9F7] rounded-xl p-5">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Fat Globules</label>
+                                    <select name="fecalysis[fat_globules]" class="w-full bg-white border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#0D7A5F]">
+                                        <option value="Rare" selected>Rare</option>
+                                        <option value="Few">Few</option>
+                                        <option value="Moderate">Moderate</option>
+                                        <option value="Many">Many</option>
+                                        <option value="None">None</option>
+                                    </select>
+                                </div>
+                                <div class="ml-4 text-right">
+                                    <span class="text-[9px] font-bold text-gray-400 block">Reference Range</span>
+                                    <span class="text-[9px] font-bold text-gray-500">Rare /hpf</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parasitology -->
+                <div class="mb-10">
+                    <h3 class="text-xs font-bold text-[#4AA6EF] uppercase tracking-widest border-b border-gray-50 pb-4 mb-6">Parasitology</h3>
+                    <div class="space-y-4">
+                        <div class="bg-[#F4F9F7] rounded-xl p-5">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Ova / Parasites</label>
+                                    <select name="fecalysis[ova_parasites]" class="w-full bg-white border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#0D7A5F]">
+                                        <option value="None seen" selected>None seen</option>
+                                        <option value="Entamoeba histolytica">Entamoeba histolytica</option>
+                                        <option value="Giardia lamblia">Giardia lamblia</option>
+                                        <option value="Ascaris lumbricoides">Ascaris lumbricoides</option>
+                                        <option value="Trichuris trichiura">Trichuris trichiura</option>
+                                        <option value="Hookworm">Hookworm</option>
+                                    </select>
+                                </div>
+                                <div class="ml-4 text-right">
+                                    <span class="text-[9px] font-bold text-gray-400 block">Reference Range</span>
+                                    <span class="text-[9px] font-bold text-gray-500">None seen</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-[#F4F9F7] rounded-xl p-5">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Cysts</label>
+                                    <select name="fecalysis[cysts]" class="w-full bg-white border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#0D7A5F]">
+                                        <option value="None seen" selected>None seen</option>
+                                        <option value="E. histolytica cysts">E. histolytica cysts</option>
+                                        <option value="G. lamblia cysts">G. lamblia cysts</option>
+                                        <option value="B. hominis">B. hominis</option>
+                                    </select>
+                                </div>
+                                <div class="ml-4 text-right">
+                                    <span class="text-[9px] font-bold text-gray-400 block">Reference Range</span>
+                                    <span class="text-[9px] font-bold text-gray-500">None seen</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-[#F4F9F7] rounded-xl p-5">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <label class="block text-[10px] font-bold text-gray-400 uppercase mb-2">Trophozoites</label>
+                                    <select name="fecalysis[trophozoites]" class="w-full bg-white border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#0D7A5F]">
+                                        <option value="None seen" selected>None seen</option>
+                                        <option value="E. histolytica troph">E. histolytica troph</option>
+                                        <option value="G. lamblia troph">G. lamblia troph</option>
+                                        <option value="T. vaginalis">T. vaginalis</option>
+                                    </select>
+                                </div>
+                                <div class="ml-4 text-right">
+                                    <span class="text-[9px] font-bold text-gray-400 block">Reference Range</span>
+                                    <span class="text-[9px] font-bold text-gray-500">None seen</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Notes (Optional) -->
+                <div>
+                    <h3 class="text-xs font-bold text-[#4AA6EF] uppercase tracking-widest border-b border-gray-50 pb-4 mb-6">Clinical Notes</h3>
+                    <div class="bg-[#F4F9F7] rounded-xl p-5">
+                        <textarea name="fecalysis[notes]" rows="3" placeholder="Enter any additional clinical observations or remarks..." 
+                            class="w-full bg-white border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#0D7A5F] resize-none"></textarea>
                     </div>
                 </div>
             </div>
