@@ -26,6 +26,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/kits/{id}/upload-results', [KitController::class, 'uploadResults'])->name('kits.upload-results');
     Route::post('/kits/{id}/save-results', [KitController::class, 'saveResults'])->name('kits.save-results');
     Route::post('/kits/{id}/release', [KitController::class, 'releaseResults'])->name('kits.release');
+    
+    Route::get('/kits/{id}/results', [KitController::class, 'viewResults'])->name('kits.view-results');
+    
+    // Edit Kit
+    Route::get('/kits/{id}/edit', [KitController::class, 'edit'])->name('kits.edit');
+    Route::put('/kits/{id}', [KitController::class, 'update'])->name('kits.update');
+    
+    // Delete Kit
+    Route::delete('/kits/{id}', [KitController::class, 'destroy'])->name('kits.destroy');
 });
 
 

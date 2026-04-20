@@ -64,25 +64,44 @@ class KitController extends Controller
     {
         $kit = Kit::findOrFail($id);
         
-        $resultsData = $request->except('_token', 'test_type');
+        // Handle each test type separately
+        $savedTests = [];
         
-        $testResult = $kit->testResults()->create([
-            'test_type' => $request->test_type,
-            'results_data' => $resultsData,
-        ]);
-
-        // Update kit status if all tests are completed
+        // Check and save Urinalysis
+        if (in_array('Urinalysis', $kit->ordered_tests) && $request->has('urinalysis')) {
+            $savedTests[] = $kit->testResults()->create([
+                'test_type' => 'urinalysis',
+                'results_data' => $request->urinalysis,
+            ]);
+        }
+        
+        // Check and save Fecalysis
+        if (in_array('Fecalysis', $kit->ordered_tests) && $request->has('fecalysis')) {
+            $savedTests[] = $kit->testResults()->create([
+                'test_type' => 'fecalysis',
+                'results_data' => $request->fecalysis,
+            ]);
+        }
+        
+        // Check and save HCG
+        if (in_array('Urine HCG', $kit->ordered_tests) && $request->has('hcg_result')) {
+            $savedTests[] = $kit->testResults()->create([
+                'test_type' => 'hcg',
+                'results_data' => ['result' => $request->hcg_result],
+            ]);
+        }
+        
+        // Update kit status
         $completedTests = $kit->testResults->pluck('test_type')->toArray();
         $orderedTests = $kit->ordered_tests;
         
         if (count($completedTests) >= count($orderedTests)) {
             $kit->status = 'complete';
-            $kit->save();
         } else {
             $kit->status = 'partial';
-            $kit->save();
         }
-
+        $kit->save();
+        
         return redirect()->route('kits.index')->with('success', 'Results uploaded successfully!');
     }
 
@@ -101,5 +120,104 @@ class KitController extends Controller
         return redirect()->route('kits.index')->with('success', 'Results released to patient portal!');
     }
 
+
+    /**
+     * View kit results (Eye button)
+     */
+    public function viewResults($id)
+    {
+        $kit = Kit::with(['patient', 'testResults'])->findOrFail($id);
+        
+        // Parse test results
+        $urinalysisData = null;
+        $fecalysisData = null;
+        $hcgData = null;
+        
+        foreach ($kit->testResults as $result) {
+            switch ($result->test_type) {
+                case 'Urinalysis':
+                    $urinalysisData = $result->results_data;
+                    break;
+                case 'Fecalysis':
+                    $fecalysisData = $result->results_data;
+                    break;
+                case 'Urine HCG':
+                    $hcgData = $result->results_data;
+                    break;
+            }
+        }
+        
+        return view('kits.view-results', compact('kit', 'urinalysisData', 'fecalysisData', 'hcgData'));
+    }
+
+    /**
+     * Show edit form
+     */
+    public function edit($id)
+    {
+        $kit = Kit::with('patient')->findOrFail($id);
+        return view('kits.edit', compact('kit'));
+    }
+
+    /**
+     * Update kit
+     */
+    public function update(Request $request, $id)
+    {
+        $kit = Kit::findOrFail($id);
+        
+        $request->validate([
+            'kit_code' => 'required|unique:kits,kit_code,' . $id,
+            'patient_name' => 'required',
+            'patient_dob' => 'required|date',
+            'patient_pin' => 'required',
+            'patient_email' => 'required|email',
+            'patient_phone' => 'required',
+            'ordered_tests' => 'required|array',
+            'collection_date' => 'required|date',
+        ]);
+        
+        // Update patient
+        $kit->patient->update([
+            'name' => $request->patient_name,
+            'date_of_birth' => $request->patient_dob,
+            'pin' => $request->patient_pin,
+            'email' => $request->patient_email,
+            'phone' => $request->patient_phone,
+        ]);
+        
+        // Update kit
+        $kit->update([
+            'kit_code' => $request->kit_code,
+            'ordered_tests' => $request->ordered_tests,
+            'collection_date' => $request->collection_date,
+        ]);
+        
+        return redirect()->route('kits.index')->with('success', 'Kit updated successfully!');
+    }
+
+    /**
+     * Delete kit
+     */
+    public function destroy($id)
+    {
+        try {
+            $kit = Kit::findOrFail($id);
+            
+            // Delete associated test results first
+            $kit->testResults()->delete();
+            
+            // Delete the patient (optional - you might want to keep patient records)
+            // $kit->patient()->delete();
+            
+            // Delete the kit
+            $kit->delete();
+            
+            return redirect()->route('kits.index')->with('success', 'Kit deleted successfully!');
+        } catch (\Exception $e) {
+            return redirect()->route('kits.index')->with('error', 'Error deleting kit: ' . $e->getMessage());
+        }
+    }
+    
     
 }

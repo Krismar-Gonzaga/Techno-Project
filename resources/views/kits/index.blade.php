@@ -52,18 +52,36 @@
                         </div>
                     </td>
                     <td class="px-6 py-4">
-                        <div class="flex space-x-2">
-                            <a href="{{ route('kits.upload-results', $kit->id) }}" 
-                               class="text-blue-600 hover:text-blue-800 text-sm">
-                                Upload Results
+                        <div class="flex items-center justify-end space-x-2">
+                            <!-- View Result Eye Button -->
+                            <a href="{{ route('kits.view-results', $kit->id) }}" 
+                            class="text-gray-400 hover:text-blue-600 transition transform hover:scale-110 inline-block" 
+                            title="View Results">
+                                <i class="fas fa-eye text-sm"></i>
                             </a>
-                            @if($kit->status == 'complete')
-                            <form method="POST" action="{{ route('kits.release', $kit->id) }}" class="inline">
-                                @csrf
-                                <button type="submit" class="text-green-600 hover:text-green-800 text-sm">
-                                    Release
-                                </button>
-                            </form>
+                            
+                            <!-- Edit Button -->
+                            <a href="{{ route('kits.edit', $kit->id) }}" 
+                            class="text-gray-400 hover:text-amber-600 transition transform hover:scale-110 inline-block" 
+                            title="Edit Kit">
+                                <i class="fas fa-edit text-sm"></i>
+                            </a>
+                            
+                            <!-- Delete Button -->
+                            <button type="button" 
+                                    onclick="confirmDelete('{{ $kit->id }}', '{{ $kit->kit_code }}')" 
+                                    class="text-gray-400 hover:text-red-600 transition transform hover:scale-110 inline-block" 
+                                    title="Delete Kit">
+                                <i class="fas fa-trash-alt text-sm"></i>
+                            </button>
+                            
+                            <!-- Upload Results Button (if pending/partial) -->
+                            @if(in_array($kit->status, ['pending', 'partial']))
+                            <a href="{{ route('kits.upload-results', $kit->id) }}" 
+                            class="text-gray-400 hover:text-green-600 transition transform hover:scale-110 inline-block" 
+                            title="Upload Results">
+                                <i class="fas fa-upload text-sm"></i>
+                            </a>
                             @endif
                         </div>
                     </td>

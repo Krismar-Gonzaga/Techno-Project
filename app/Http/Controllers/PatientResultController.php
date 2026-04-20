@@ -34,7 +34,7 @@ class PatientResultController extends Controller
         // Parse JSON data
         $urinalysisData = $urinalysis ? $urinalysis->results_data['urinalysis'] : null;
         $hcgData = $hcg ? $hcg->results_data : null;
-        $fecalysisData = $fecalysis && isset($fecalysis->results_data['fecalysis']) ? $fecalysis->results_data['fecalysis'] : null; // Added Fecalysis data
+        $fecalysisData = $fecalysis && isset($fecalysis->results_data) ? $fecalysis->results_data : null; // Added Fecalysis data
         
         // Debug: Check if data exists
         \Log::info('Kit ID: ' . $kit->id);

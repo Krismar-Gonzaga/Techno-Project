@@ -339,6 +339,139 @@
     </div>
     @endif
 
+    @php
+    // Parse results data if it's stored as JSON string
+    $urinalysisDataArray = is_string($urinalysisData ?? null) ? json_decode($urinalysisData, true) : ($urinalysisData ?? []);
+    $hcgDataArray = is_string($hcgData ?? null) ? json_decode($hcgData, true) : ($hcgData ?? []);
+    $fecalysisDataArray = is_string($fecalysisData ?? null) ? json_decode($fecalysisData, true) : ($fecalysisData ?? []);
+    @endphp
+
+    <!-- Fecalysis Section -->
+    @if($fecalysisDataArray)
+    <div class="section-container">
+        <div class="section-header">
+            <div class="section-title">
+                Fecalysis 
+                <span class="status-badge">✓ Status: {{ $fecalysisDataArray['status'] ?? 'Normal' }}</span>
+            </div>
+            <div class="collection-date">
+                Analysis Date: {{ $kit->collection_date instanceof \DateTime ? $kit->collection_date->format('M d, Y') : ($kit->collection_date ? date('M d, Y', strtotime($kit->collection_date)) : 'Current') }}
+            </div>
+        </div>
+
+        <!-- Physical Characteristics -->
+        <div class="data-label">Physical Characteristics</div>
+        <div class="data-grid">
+            <div class="data-card">
+                <div class="data-card-label">Color</div>
+                <div class="data-card-value">{{ $fecalysisDataArray['color'] ?? 'Brown' }}</div>
+                <span class="normal-tag">{{ $fecalysisDataArray['color_status'] ?? 'NORMAL' }}</span>
+            </div>
+            <div class="data-card">
+                <div class="data-card-label">Consistency</div>
+                <div class="data-card-value">{{ $fecalysisDataArray['consistency'] ?? 'Formed' }}</div>
+                <span class="normal-tag">{{ $fecalysisDataArray['consistency_status'] ?? 'NORMAL' }}</span>
+            </div>
+        </div>
+
+        <!-- Microscopic Examination -->
+        <div class="data-label">Microscopic Examination</div>
+        <table class="results-table">
+            <tr>
+                <td class="param-name">Pus Cells (WBC)</td>
+                <td class="param-value">
+                    {{ $fecalysisDataArray['pus_cells'] ?? '0-2' }} /hpf
+                    <span class="green-dot"></span>
+                    <span class="ref-range">Ref: 0-5 /hpf</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="param-name">RBC</td>
+                <td class="param-value">
+                    {{ $fecalysisDataArray['rbc'] ?? '0' }} /hpf
+                    <span class="green-dot"></span>
+                    <span class="ref-range">Ref: 0 /hpf</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="param-name">Fat Globules</td>
+                <td class="param-value">
+                    {{ $fecalysisDataArray['fat_globules'] ?? 'Rare' }}
+                    <span class="green-dot"></span>
+                    <span class="ref-range">Ref: Rare /hpf</span>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Parasitology -->
+        <div class="data-label">Parasitology</div>
+        <table class="results-table">
+            <tr>
+                <td class="param-name">Ova / Parasites</td>
+                <td class="param-value">
+                    {{ $fecalysisDataArray['ova_parasites'] ?? 'None seen' }}
+                    <span class="green-dot"></span>
+                    <span class="ref-range">Ref: None seen</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="param-name">Cysts</td>
+                <td class="param-value">
+                    {{ $fecalysisDataArray['cysts'] ?? 'None seen' }}
+                    <span class="green-dot"></span>
+                    <span class="ref-range">Ref: None seen</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="param-name">Trophozoites</td>
+                <td class="param-value">
+                    {{ $fecalysisDataArray['trophozoites'] ?? 'None seen' }}
+                    <span class="green-dot"></span>
+                    <span class="ref-range">Ref: None seen</span>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Chemical Tests (if available) -->
+        @if(isset($fecalysisDataArray['occult_blood']) || isset($fecalysisDataArray['reducing_substances']))
+        <div class="data-label">Chemical Tests</div>
+        <table class="results-table">
+            @if(isset($fecalysisDataArray['occult_blood']))
+            <tr>
+                <td class="param-name">Occult Blood</td>
+                <td class="param-value">
+                    {{ $fecalysisDataArray['occult_blood'] ?? 'Negative' }}
+                    <span class="green-dot"></span>
+                    <span class="ref-range">Ref: Negative</span>
+                </td>
+            </tr>
+            @endif
+            @if(isset($fecalysisDataArray['reducing_substances']))
+            <tr>
+                <td class="param-name">Reducing Substances</td>
+                <td class="param-value">
+                    {{ $fecalysisDataArray['reducing_substances'] ?? 'Negative' }}
+                    <span class="green-dot"></span>
+                    <span class="ref-range">Ref: Negative</span>
+                </td>
+            </tr>
+            @endif
+        </table>
+        @endif
+
+        <!-- Additional Notes -->
+        @if(isset($fecalysisDataArray['notes']) && $fecalysisDataArray['notes'])
+        <div class="data-label">Clinical Notes</div>
+        <div class="summary-box" style="background-color: #fffbeb; margin-top: 10px;">
+            <div class="summary-text" style="color: #92400e;">
+                {{ $fecalysisDataArray['notes'] }}
+            </div>
+        </div>
+        @endif
+    </div>
+    @endif
+
+
     @if($hcgDataArray)
     <div class="section-container">
         <div class="section-header">
