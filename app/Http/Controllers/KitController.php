@@ -135,13 +135,13 @@ class KitController extends Controller
         
         foreach ($kit->testResults as $result) {
             switch ($result->test_type) {
-                case 'Urinalysis':
+                case 'urinalysis':
                     $urinalysisData = $result->results_data;
                     break;
-                case 'Fecalysis':
+                case 'fecalysis':
                     $fecalysisData = $result->results_data;
                     break;
-                case 'Urine HCG':
+                case 'hcg':
                     $hcgData = $result->results_data;
                     break;
             }
