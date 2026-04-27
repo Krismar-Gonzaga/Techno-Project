@@ -67,7 +67,7 @@ class PatientResultController extends Controller
         // Get the results data
         $urinalysisData = $urinalysis ? $urinalysis->results_data['urinalysis'] : null;
         $hcgData = $hcg ? $hcg->results_data : null;
-        $fecalysisData = $fecalysis ? $fecalysis->results_data['fecalysis'] : null; // Added Fecalysis data
+        $fecalysisData = $fecalysis ? $fecalysis->results_data : null; // Added Fecalysis data
         
         // Load PDF view
         $pdf = app('dompdf.wrapper');
