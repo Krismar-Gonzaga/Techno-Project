@@ -12,9 +12,6 @@
             "destination": "/api/lambda.php"
         }
         
-    ],
-    "buildCommands": [
-        "cp -r public/* ."
     ]
 
  }
