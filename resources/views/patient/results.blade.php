@@ -53,7 +53,8 @@
                 <img src="{{ asset('images/wellora-logo.png') }}" alt="WellOra Logo" class="h-8 w-auto mr-2">
                 
                 <div class="text-[#0D7A5F] text-lg font-bold flex items-center">
-                    WellOra 
+                                    <img src="{{ asset('images/wellOraText.png') }}" alt="WellOra Logo" class="h-8 w-auto mr-2">
+ 
                     <span class="ml-2 text-[10px] bg-[#E8F3F0] px-2 py-1 rounded text-[#0D7A5F] uppercase tracking-widest font-bold">
                         Read-Only View
                     </span>

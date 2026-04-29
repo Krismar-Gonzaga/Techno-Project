@@ -207,10 +207,9 @@
         <tr>
             <td width="60%" class="logo-text" style="vertical-align: middle;">
                 <div style="display: flex; align-items: center;">
-                    
-                    <span style="color: #0D7A5F; font-weight: bold; font-size: 18px; vertical-align: middle;">
-                        WellOra
-                    </span>
+                    <div style="text-align: left;">
+                        <span style="color: #064053; font-weight: bold; font-size: 18px; vertical-align: middle; font-family: sans-serif;">Well</span><span style="color: #59B896; font-weight: bold; font-size: 18px; vertical-align: middle; font-family: sans-serif;">Ora</span>
+                    </div>
                 </div>
             </td>
             <td width="40%" class="date-header">

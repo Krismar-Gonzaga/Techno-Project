@@ -3,16 +3,15 @@
         <div class="flex items-center tracking-tight">
             <img src="{{ asset('images/wellora-logo.png') }}" alt="WellOra Logo" class="h-8 w-auto mr-2">
             
-            <span class="text-[#0D7A5F] text-lg font-bold">
-                WellOra
-            </span>
+            <img src="{{ asset('images/WellOraText.png') }}" alt="WellOra Logo" class="h-8 w-auto mr-2">
+
         </div>
     </div>
     
     <nav class="flex items-center space-x-8 text-[11px] font-bold uppercase tracking-wider">
         @guest
             <a href="{{ route('patient.access.form') }}" 
-               class="text-[#0D7A5F] hover:text-[#0D7A5F] transition pb-1 {{ request()->routeIs('patient.access.form') ? 'border-b-2 border-[#0D7A5F]' : 'border-b-2 border-transparent' }}">
+               class="transition pb-1 {{ request()->routeIs('patient.access.form') ? 'text-[#0D7A5F] border-b-2 border-[#0D7A5F]' : 'text-gray-400 hover:text-[#0D7A5F] border-b-2 border-transparent' }}">
                 Access view Result
             </a>
             <a href="{{ route('login') }}" 
@@ -22,7 +21,7 @@
         @endguest
     </nav>
 
-    <div class="alignment-right text-gray-400 hover:text-gray-600 cursor-pointer transition">
+    <div class="alignment-right text-gray-400 hover:text-gray-600 cursor-pointer transition" style="margin-right: 0;">
         <i class="far fa-question-circle text-lg"></i>
     </div>
 
