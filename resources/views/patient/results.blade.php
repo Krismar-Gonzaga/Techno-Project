@@ -48,8 +48,17 @@
 </head>
 <body class="pb-24">
     <header class="w-full bg-white px-12 py-5 flex justify-between items-center sticky top-0 z-50">
-        <div class="text-[#0D7A5F] text-lg font-bold tracking-tight">
-            Serene Portal <span class="ml-2 text-[10px] bg-[#E8F3F0] px-2 py-1 rounded text-[#0D7A5F] uppercase tracking-widest font-bold">Read-Only View</span>
+        <div class="flex items-center space-x-2">
+            <div class="flex items-center tracking-tight">
+                <img src="{{ asset('images/wellora-logo.png') }}" alt="WellOra Logo" class="h-8 w-auto mr-2">
+                
+                <div class="text-[#0D7A5F] text-lg font-bold flex items-center">
+                    WellOra 
+                    <span class="ml-2 text-[10px] bg-[#E8F3F0] px-2 py-1 rounded text-[#0D7A5F] uppercase tracking-widest font-bold">
+                        Read-Only View
+                    </span>
+                </div>
+            </div>
         </div>
         <div class="flex items-center space-x-6 text-gray-400">
             <i class="far fa-bell text-lg cursor-pointer"></i>
@@ -353,7 +362,7 @@
             </p>
             <div class="mt-6 flex items-center space-x-2 text-[10px] font-bold text-[#0D7A5F] uppercase tracking-tighter">
                 <i class="fas fa-check-circle"></i>
-                <span>Verified by Serene Medical Team on {{ now()->format('M d, Y') }}</span>
+                <span>Verified by WellOra Medical Team on {{ now()->format('M d, Y') }}</span>
             </div>
         </div>
     </main>

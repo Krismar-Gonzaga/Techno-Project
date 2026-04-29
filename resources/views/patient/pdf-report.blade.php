@@ -205,8 +205,13 @@
 
     <table class="header-table" width="100%">
         <tr>
-            <td width="60%" class="logo-text">
-                🔬 Serene Portal
+            <td width="60%" class="logo-text" style="vertical-align: middle;">
+                <div style="display: flex; align-items: center;">
+                    
+                    <span style="color: #0D7A5F; font-weight: bold; font-size: 18px; vertical-align: middle;">
+                        WellOra
+                    </span>
+                </div>
             </td>
             <td width="40%" class="date-header">
                 Report Date: {{ now()->format('M d, Y') }}

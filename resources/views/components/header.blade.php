@@ -1,7 +1,11 @@
 <header class="w-full bg-white/80 backdrop-blur-md px-12 py-5 flex justify-between items-center">
     <div class="flex items-center space-x-2">
-        <div class="text-[#0D7A5F] text-lg font-bold flex items-center tracking-tight">
-            <i class="fas fa-shield-halved mr-2"></i> Serene Portal
+        <div class="flex items-center tracking-tight">
+            <img src="{{ asset('images/wellora-logo.png') }}" alt="WellOra Logo" class="h-8 w-auto mr-2">
+            
+            <span class="text-[#0D7A5F] text-lg font-bold">
+                WellOra
+            </span>
         </div>
     </div>
     
