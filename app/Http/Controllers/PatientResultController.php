@@ -32,7 +32,7 @@ class PatientResultController extends Controller
         $fecalysis = $testResults->where('test_type', 'fecalysis')->first(); // Added Fecalysis
         
         // Parse JSON data
-        $urinalysisData = $urinalysis ? $urinalysis->results_data['urinalysis'] : null;
+        $urinalysisData = $urinalysis ? $urinalysis->results_data : null;
         $hcgData = $hcg ? $hcg->results_data : null;
         $fecalysisData = $fecalysis && isset($fecalysis->results_data) ? $fecalysis->results_data : null; // Added Fecalysis data
         
@@ -65,7 +65,7 @@ class PatientResultController extends Controller
         $fecalysis = $testResults->where('test_type', 'fecalysis')->first(); // Added Fecalysis
         
         // Get the results data
-        $urinalysisData = $urinalysis ? $urinalysis->results_data['urinalysis'] : null;
+        $urinalysisData = $urinalysis ? $urinalysis->results_data : null;
         $hcgData = $hcg ? $hcg->results_data : null;
         $fecalysisData = $fecalysis ? $fecalysis->results_data : null; // Added Fecalysis data
         
